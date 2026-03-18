@@ -1,5 +1,6 @@
 # neuralpath
 🧠 Free AI/ML mastery curriculum — Python to LLMs, Deep Learning &amp; research publication. 10 phases, 48 weeks, 60+ curated resources. Zero cost, zero paywalls. Built for Bangladeshi learners. | বিনামূল্যে AI/ML কোর্স
+LIVE DEMO LINK - https://neuralpath08.netlify.app/
 <div align="center">
 
 <img src="https://img.shields.io/badge/version-3.0-00d4b4?style=for-the-badge&labelColor=0a0b1a" />
