@@ -1,0 +1,2507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuralPath — বিনামূল্যে AI/ML শেখো</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════
+   TOKENS
+════════════════════════════════════════════════ */
+:root {
+  --ease: cubic-bezier(.22,.68,0,1.2);
+  --ease2: cubic-bezier(.4,0,.2,1);
+  --r: 12px;
+}
+[data-theme="dark"] {
+  --bg:     #08090e;
+  --bg1:    #0e0f18;
+  --bg2:    #13141f;
+  --bg3:    #1a1b2a;
+  --surf:   #111220;
+  --line:   rgba(255,255,255,.06);
+  --line2:  rgba(255,255,255,.11);
+  --txt:    #b0b3cc;
+  --dim:    #4e5070;
+  --hi:     #f0f1ff;
+  --ink:    #ffffff;
+  --gold:   #f5c542;
+  --teal:   #00d4b4;
+  --coral:  #ff6b6b;
+  --sky:    #5bb8ff;
+  --lav:    #b48eff;
+  --sha:    0 20px 60px rgba(0,0,0,.7);
+}
+[data-theme="light"] {
+  --bg:     #fafbff;
+  --bg1:    #f3f4fc;
+  --bg2:    #ebecf7;
+  --bg3:    #e2e4f2;
+  --surf:   #ffffff;
+  --line:   rgba(0,0,30,.06);
+  --line2:  rgba(0,0,30,.12);
+  --txt:    #3a3d5c;
+  --dim:    #9295b5;
+  --hi:     #0d0f2b;
+  --ink:    #0a0b1a;
+  --gold:   #c9960a;
+  --teal:   #007a69;
+  --coral:  #d94040;
+  --sky:    #1a72c7;
+  --lav:    #6d3fcf;
+  --sha:    0 20px 60px rgba(0,0,40,.1);
+}
+
+/* ════════ BASE ════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Instrument Sans',sans-serif;
+  background:var(--bg);color:var(--txt);
+  overflow-x:hidden;
+  transition:background .35s var(--ease2),color .35s var(--ease2);
+  line-height:1.6;
+}
+
+/* ════════ DECORATIVE BACKGROUND ════════ */
+.bg-deco{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.bg-deco::before{
+  content:'';position:absolute;
+  width:900px;height:900px;
+  background:radial-gradient(circle,rgba(0,212,180,.055) 0%,transparent 65%);
+  top:-200px;right:-200px;
+  animation:floatA 18s ease-in-out infinite alternate;
+}
+.bg-deco::after{
+  content:'';position:absolute;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(91,184,255,.04) 0%,transparent 65%);
+  bottom:-100px;left:-100px;
+  animation:floatB 22s ease-in-out infinite alternate;
+}
+@keyframes floatA{to{transform:translate(60px,80px)}}
+@keyframes floatB{to{transform:translate(-50px,60px)}}
+
+/* ════════ NAV ════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(16px,4%,64px);
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  transition:background .35s var(--ease2);
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+}
+.logo-icon{
+  width:34px;height:34px;
+  background:var(--teal);
+  border-radius:8px;
+  display:grid;place-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;font-weight:600;
+  color:var(--bg);
+  flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.logo-icon::after{
+  content:'';position:absolute;
+  width:200%;height:200%;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);
+  transform:translateX(-100%) translateY(-100%);
+  transition:transform .5s;
+}
+.logo:hover .logo-icon::after{transform:translateX(50%) translateY(50%)}
+.logo-text{
+  font-family:'DM Serif Display',serif;
+  font-size:1.2rem;color:var(--hi);
+  letter-spacing:-.01em;
+}
+.nav-pills{
+  display:flex;gap:2px;
+  background:var(--bg2);border:1px solid var(--line2);
+  padding:3px;border-radius:9px;
+}
+.nav-pills a{
+  color:var(--dim);text-decoration:none;
+  font-size:.8rem;font-weight:500;
+  padding:5px 13px;border-radius:6px;
+  transition:all .2s;
+}
+.nav-pills a:hover{color:var(--hi);background:var(--line)}
+.nav-r{display:flex;align-items:center;gap:10px}
+
+/* Theme toggle */
+.tog{
+  display:flex;align-items:center;gap:7px;
+  background:var(--bg2);border:1px solid var(--line2);
+  padding:5px 10px;border-radius:8px;
+  cursor:pointer;user-select:none;
+  font-size:.75rem;font-family:'JetBrains Mono',monospace;
+  color:var(--dim);transition:all .2s;
+}
+.tog:hover{color:var(--hi);border-color:var(--teal)}
+.tog-knob{
+  width:28px;height:16px;
+  background:var(--bg3);border:1px solid var(--line2);
+  border-radius:100px;position:relative;
+  transition:background .3s;
+}
+.tog-knob::after{
+  content:'';
+  position:absolute;top:2px;left:2px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--teal);
+  transition:transform .3s var(--ease);
+}
+[data-theme="light"] .tog-knob::after{transform:translateX(12px);background:var(--gold)}
+.btn-start{
+  background:var(--teal);color:var(--bg);
+  padding:7px 18px;border-radius:8px;
+  font-size:.8rem;font-weight:700;
+  text-decoration:none;letter-spacing:.01em;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.btn-start:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ════════ HERO ════════ */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:80px clamp(16px,4%,64px) 60px;
+  overflow:hidden;
+}
+.hero-inner{
+  max-width:1280px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1.1fr .9fr;
+  gap:64px;align-items:center;
+}
+
+/* editorial badge */
+.badge-row{display:flex;align-items:center;gap:10px;margin-bottom:28px;animation:riseUp .7s var(--ease) both}
+.badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 12px;border-radius:4px;
+}
+.badge-free{background:rgba(0,212,180,.1);border:1px solid rgba(0,212,180,.25);color:var(--teal)}
+.badge-open{background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.2);color:var(--gold)}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--dim);flex-shrink:0}
+
+.hero-title{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.8rem,5.5vw,4.8rem);
+  line-height:.95;
+  color:var(--ink);
+  letter-spacing:-.03em;
+  margin-bottom:28px;
+  animation:riseUp .7s .1s var(--ease) both;
+}
+.hero-title em{font-style:italic;color:var(--teal)}
+.hero-title .sm{
+  display:block;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:clamp(.9rem,1.5vw,1.1rem);
+  font-weight:400;color:var(--dim);
+  letter-spacing:.02em;
+  margin-top:14px;font-style:normal;
+}
+
+.hero-desc{
+  color:var(--txt);font-size:1rem;font-weight:400;
+  line-height:1.8;max-width:480px;
+  margin-bottom:36px;
+  animation:riseUp .7s .18s var(--ease) both;
+}
+
+.hero-kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--line2);
+  border:1px solid var(--line2);border-radius:12px;overflow:hidden;
+  margin-bottom:36px;
+  animation:riseUp .7s .26s var(--ease) both;
+}
+.kpi{
+  background:var(--surf);padding:16px 14px;
+  transition:background .2s;
+}
+.kpi:hover{background:var(--bg3)}
+.kpi-n{
+  font-family:'DM Serif Display',serif;
+  font-size:1.8rem;color:var(--hi);line-height:1;
+  margin-bottom:3px;
+}
+.kpi-l{font-size:.7rem;color:var(--dim);letter-spacing:.05em;text-transform:uppercase}
+
+.hero-btns{display:flex;gap:10px;animation:riseUp .7s .34s var(--ease) both}
+.btn-pri{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--teal);color:var(--bg);
+  padding:12px 26px;border-radius:9px;
+  font-weight:700;font-size:.88rem;
+  text-decoration:none;
+  transition:all .25s;
+  box-shadow:0 0 32px rgba(0,212,180,.2);
+}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,212,180,.35)}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line2);color:var(--txt);
+  padding:12px 26px;border-radius:9px;
+  font-weight:500;font-size:.88rem;
+  text-decoration:none;transition:all .25s;
+}
+.btn-sec:hover{border-color:var(--teal);color:var(--hi)}
+
+/* Hero right: big decorative number + tag cloud */
+.hero-vis{
+  animation:slideIn .9s .25s var(--ease) both;
+  position:relative;
+}
+@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+
+.big-number{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(7rem,13vw,11rem);
+  line-height:.85;
+  color:transparent;
+  -webkit-text-stroke:1px var(--line2);
+  user-select:none;
+  position:relative;
+}
+.big-number span{
+  position:absolute;bottom:0;right:0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;font-weight:500;
+  color:var(--dim);letter-spacing:.08em;
+  -webkit-text-stroke:0;
+}
+
+.tag-cloud{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;
+}
+.tc-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;padding:5px 12px;border-radius:5px;
+  border:1px solid var(--line2);color:var(--dim);
+  transition:all .2s;cursor:default;
+}
+.tc-tag:hover{border-color:var(--teal);color:var(--teal);transform:scale(1.05)}
+.tc-tag.hot{border-color:rgba(0,212,180,.3);color:var(--teal);background:rgba(0,212,180,.07)}
+
+.hero-strip{
+  grid-column:1/-1;
+  border-top:1px solid var(--line);
+  padding-top:24px;
+  display:flex;gap:32px;overflow-x:auto;
+  animation:riseUp .7s .42s var(--ease) both;
+}
+.hs-item{
+  display:flex;align-items:center;gap:8px;
+  white-space:nowrap;flex-shrink:0;
+  font-size:.78rem;color:var(--dim);
+}
+.hs-item span{color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:.65rem}
+
+@keyframes riseUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════════ LAYOUT HELPERS ════════ */
+section{position:relative;z-index:1}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4%,64px)}
+.sec{padding:88px 0}
+.sec-alt{background:var(--bg1)}
+.sec-head{margin-bottom:48px}
+.pre{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:10px;display:block;
+}
+.h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.9rem,3.2vw,2.7rem);
+  color:var(--hi);letter-spacing:-.03em;line-height:1.15;
+  margin-bottom:12px;
+}
+.lead{font-size:.95rem;color:var(--dim);max-width:520px;line-height:1.75}
+
+/* ════════ CURRICULUM ════════ */
+.phase-list{display:flex;flex-direction:column;gap:0}
+.ph{border-bottom:1px solid var(--line);overflow:hidden}
+.ph:first-child{border-top:1px solid var(--line)}
+.ph-row{
+  display:flex;align-items:center;gap:20px;
+  padding:22px 0;cursor:pointer;
+  transition:color .2s;
+}
+.ph-row:hover .ph-title{color:var(--teal)}
+.ph-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;color:var(--dim);
+  width:72px;flex-shrink:0;letter-spacing:.05em;
+}
+.ph-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;color:var(--hi);flex:1;
+  transition:color .2s;letter-spacing:-.01em;
+}
+.ph-meta{display:flex;gap:12px;font-size:.72rem;color:var(--dim);flex-shrink:0}
+.ph-meta b{color:var(--txt)}
+.ph-arrow{
+  width:26px;height:26px;border:1px solid var(--line2);border-radius:6px;
+  display:grid;place-items:center;color:var(--dim);font-size:.8rem;
+  flex-shrink:0;transition:all .3s var(--ease);
+}
+.ph.open .ph-arrow{background:var(--teal);border-color:var(--teal);color:var(--bg);transform:rotate(45deg)}
+
+.ph-body{display:none;padding-bottom:24px}
+.ph.open .ph-body{display:block}
+
+.wk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.wk{
+  background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px 18px;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.wk::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--teal),var(--lav));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease2);
+}
+.wk:hover{border-color:rgba(0,212,180,.3);transform:translateY(-2px)}
+.wk:hover::after{transform:scaleX(1)}
+.wk-wk{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);margin-bottom:5px}
+.wk-t{font-weight:600;color:var(--hi);font-size:.85rem;margin-bottom:7px}
+.wk-ul{list-style:none;font-size:.75rem;color:var(--dim);line-height:1.85}
+.wk-ul li{padding-left:11px;position:relative}
+.wk-ul li::before{content:'–';position:absolute;left:0;color:var(--teal)}
+.wk-links{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.lnk{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;
+  padding:3px 9px;border-radius:4px;text-decoration:none;
+  border:1px solid var(--line2);color:var(--dim);
+  transition:all .18s;
+}
+.lnk:hover{border-color:var(--teal);color:var(--teal)}
+.lnk.g{border-color:rgba(245,197,66,.2);color:var(--gold)}
+.lnk.g:hover{background:rgba(245,197,66,.08)}
+.lnk.c{border-color:rgba(255,107,107,.2);color:var(--coral)}
+.lnk.c:hover{background:rgba(255,107,107,.08)}
+
+/* ════════ RESOURCES — the star of the show ════════ */
+.res-section{background:var(--bg)}
+
+/* Filter tabs */
+.filter-bar{
+  display:flex;gap:6px;flex-wrap:wrap;margin-bottom:36px;
+  padding:5px;background:var(--bg1);border:1px solid var(--line);
+  border-radius:11px;width:fit-content;
+}
+.f-btn{
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  padding:6px 16px;border-radius:7px;
+  border:none;cursor:pointer;
+  background:transparent;color:var(--dim);
+  transition:all .2s;letter-spacing:.04em;
+}
+.f-btn:hover{color:var(--hi)}
+.f-btn.active{background:var(--surf);color:var(--hi);box-shadow:var(--sha)}
+
+/* Resource grid — masonry feel */
+.res-board{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:14px;
+}
+
+.rc{
+  background:var(--surf);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:0;
+  display:flex;flex-direction:column;
+  transition:all .25s var(--ease2);
+  overflow:hidden;
+  position:relative;
+}
+.rc[data-cat="video"]:hover{border-color:rgba(255,107,107,.4)}
+.rc[data-cat="course"]:hover{border-color:rgba(0,212,180,.4)}
+.rc[data-cat="book"]:hover{border-color:rgba(245,197,66,.4)}
+.rc[data-cat="tool"]:hover{border-color:rgba(91,184,255,.4)}
+.rc[data-cat="research"]:hover{border-color:rgba(180,142,255,.4)}
+.rc:hover{transform:translateY(-4px);box-shadow:var(--sha)}
+
+/* Color bar */
+.rc-bar{height:4px;width:100%}
+.rc[data-cat="video"] .rc-bar{background:linear-gradient(90deg,var(--coral),#ff9e9e)}
+.rc[data-cat="course"] .rc-bar{background:linear-gradient(90deg,var(--teal),#7effd4)}
+.rc[data-cat="book"] .rc-bar{background:linear-gradient(90deg,var(--gold),#fde68a)}
+.rc[data-cat="tool"] .rc-bar{background:linear-gradient(90deg,var(--sky),#a8d8ff)}
+.rc[data-cat="research"] .rc-bar{background:linear-gradient(90deg,var(--lav),#d4b5ff)}
+
+.rc-body{padding:20px 22px 18px;flex:1;display:flex;flex-direction:column;gap:10px}
+
+.rc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.rc-cat{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:4px;border:1px solid var(--line2);
+  flex-shrink:0;
+}
+.rc[data-cat="video"] .rc-cat{color:var(--coral);border-color:rgba(255,107,107,.25);background:rgba(255,107,107,.07)}
+.rc[data-cat="course"] .rc-cat{color:var(--teal);border-color:rgba(0,212,180,.25);background:rgba(0,212,180,.07)}
+.rc[data-cat="book"] .rc-cat{color:var(--gold);border-color:rgba(245,197,66,.25);background:rgba(245,197,66,.07)}
+.rc[data-cat="tool"] .rc-cat{color:var(--sky);border-color:rgba(91,184,255,.25);background:rgba(91,184,255,.07)}
+.rc[data-cat="research"] .rc-cat{color:var(--lav);border-color:rgba(180,142,255,.25);background:rgba(180,142,255,.07)}
+
+/* Difficulty stars */
+.diff{display:flex;gap:3px}
+.diff-pip{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--line2);transition:background .2s;
+}
+.rc:hover .diff-pip.on{background:var(--gold)}
+.diff-pip.on{background:var(--gold)}
+
+.rc-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;color:var(--hi);
+  letter-spacing:-.02em;line-height:1.25;
+}
+
+.rc-desc{font-size:.82rem;color:var(--dim);line-height:1.7;flex:1}
+
+.rc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.r-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;padding:2px 8px;
+  border-radius:4px;background:var(--bg2);
+  border:1px solid var(--line);color:var(--dim);
+}
+
+.rc-foot{
+  padding:12px 22px 16px;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.rc-by{font-size:.72rem;color:var(--dim);font-style:italic}
+.rc-link{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;font-weight:600;
+  color:var(--teal);text-decoration:none;
+  letter-spacing:.04em;transition:gap .2s;
+}
+.rc-link:hover{gap:8px}
+
+/* "What you'll get" pill */
+.rc-gain{
+  display:flex;align-items:center;gap:6px;
+  font-size:.72rem;color:var(--txt);
+  background:var(--bg2);border:1px solid var(--line);
+  padding:5px 10px;border-radius:6px;
+  width:fit-content;
+}
+.rc-gain-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);flex-shrink:0}
+
+/* ════════ TOOLS ════════ */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;
+}
+.tc{
+  background:var(--surf);border:1px solid var(--line);
+  border-radius:var(--r);padding:22px 16px;
+  text-align:center;transition:all .22s;
+  position:relative;overflow:hidden;
+}
+.tc::before{
+  content:'FREE';
+  position:absolute;top:9px;right:-14px;
+  background:var(--teal);color:var(--bg);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.5rem;font-weight:700;
+  padding:2px 20px;transform:rotate(35deg);
+  letter-spacing:.08em;
+}
+.tc:hover{border-color:rgba(0,212,180,.35);transform:translateY(-4px)}
+.tc-icon{font-size:1.8rem;margin-bottom:9px}
+.tc-name{font-weight:600;color:var(--hi);font-size:.83rem}
+.tc-cat{font-size:.68rem;color:var(--dim);margin-top:3px}
+
+/* ════════ PROJECTS ════════ */
+.proj-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:14px;
+}
+.pj{
+  background:var(--surf);border:1px solid var(--line);
+  border-radius:16px;padding:26px;
+  display:flex;flex-direction:column;gap:12px;
+  transition:all .22s;
+}
+.pj:hover{transform:translateY(-4px);border-color:var(--teal)}
+.pj-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;letter-spacing:.06em;
+  padding:3px 10px;border-radius:4px;
+  display:inline-block;width:fit-content;
+}
+.b{background:rgba(0,212,180,.08);color:var(--teal);border:1px solid rgba(0,212,180,.2)}
+.i{background:rgba(180,142,255,.08);color:var(--lav);border:1px solid rgba(180,142,255,.2)}
+.a{background:rgba(255,107,107,.08);color:var(--coral);border:1px solid rgba(255,107,107,.2)}
+.pj-title{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--hi);letter-spacing:-.02em}
+.pj-desc{font-size:.8rem;color:var(--dim);line-height:1.65}
+.pj-stack{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto}
+.s-tag{background:var(--bg2);border:1px solid var(--line);color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:3px 9px;border-radius:4px}
+
+/* ════════ ROADMAP ════════ */
+.rm{
+  display:flex;gap:0;overflow-x:auto;
+  padding-bottom:10px;
+  scrollbar-width:thin;scrollbar-color:var(--line2) transparent;
+}
+.rm-node{
+  min-width:220px;flex-shrink:0;
+  padding:24px 24px 24px 20px;
+  background:var(--surf);border:1px solid var(--line);border-right:none;
+  position:relative;transition:background .2s;
+}
+.rm-node:first-child{border-radius:12px 0 0 12px}
+.rm-node:last-child{border-right:1px solid var(--line);border-radius:0 12px 12px 0}
+.rm-node:hover{background:var(--bg3)}
+.rm-node::after{content:'→';position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--line2);font-size:1.4rem;z-index:1}
+.rm-node:last-child::after{display:none}
+.rm-n{font-family:'DM Serif Display',serif;font-size:2.2rem;color:var(--line2);line-height:1;margin-bottom:10px}
+.rm-pre{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--teal);margin-bottom:5px;letter-spacing:.06em}
+.rm-t{font-weight:600;color:var(--hi);font-size:.85rem;margin-bottom:4px}
+.rm-w{font-size:.72rem;color:var(--dim)}
+
+/* ════════ TOOL MODAL ════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s var(--ease2);
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg1);
+  border:1px solid var(--line2);
+  border-radius:20px;
+  width:100%;max-width:680px;
+  max-height:88vh;
+  overflow-y:auto;
+  transform:translateY(24px) scale(.97);
+  transition:transform .35s var(--ease);
+  scrollbar-width:thin;scrollbar-color:var(--line2) transparent;
+}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-head{
+  position:sticky;top:0;z-index:10;
+  background:var(--bg1);
+  border-bottom:1px solid var(--line);
+  padding:22px 26px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+}
+.modal-tool-id{display:flex;align-items:center;gap:14px}
+.modal-icon{font-size:2.4rem;line-height:1}
+.modal-name{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--hi);letter-spacing:-.02em}
+.modal-cat{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.modal-close{
+  width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--line2);background:transparent;
+  color:var(--dim);cursor:pointer;font-size:1rem;
+  display:grid;place-items:center;
+  transition:all .2s;flex-shrink:0;
+}
+.modal-close:hover{border-color:var(--coral);color:var(--coral)}
+.modal-body{padding:24px 26px 28px}
+.modal-section{margin-bottom:24px}
+.modal-section:last-child{margin-bottom:0}
+.ms-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:10px;display:block;
+}
+.ms-desc{font-size:.88rem;color:var(--txt);line-height:1.8}
+
+/* Download buttons */
+.dl-btns{display:flex;flex-wrap:wrap;gap:8px}
+.dl-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:9px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;font-weight:600;letter-spacing:.03em;
+  text-decoration:none;
+  border:1px solid var(--line2);
+  color:var(--hi);background:var(--bg2);
+  transition:all .2s;
+}
+.dl-btn:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,212,180,.07);transform:translateY(-1px)}
+.dl-btn.primary{background:var(--teal);color:var(--bg);border-color:var(--teal)}
+.dl-btn.primary:hover{filter:brightness(1.1);color:var(--bg)}
+.dl-btn svg{flex-shrink:0}
+
+/* Setup steps */
+.setup-steps{display:flex;flex-direction:column;gap:0}
+.ss{
+  display:flex;gap:14px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.ss:last-child{border-bottom:none}
+.ss-num{
+  width:24px;height:24px;border-radius:6px;
+  background:rgba(0,212,180,.1);border:1px solid rgba(0,212,180,.2);
+  color:var(--teal);font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;font-weight:600;
+  display:grid;place-items:center;flex-shrink:0;margin-top:1px;
+}
+.ss-content{}
+.ss-title{font-weight:600;color:var(--hi);font-size:.83rem;margin-bottom:3px}
+.ss-detail{font-size:.77rem;color:var(--dim);line-height:1.65}
+.ss-code{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  background:var(--bg3);border:1px solid var(--line2);
+  color:var(--sky);padding:6px 10px;border-radius:6px;
+  margin-top:6px;display:block;word-break:break-all;
+}
+
+/* Tips chips */
+.tip-chips{display:flex;flex-wrap:wrap;gap:6px}
+.tip{
+  font-size:.75rem;color:var(--txt);
+  background:var(--bg2);border:1px solid var(--line);
+  padding:5px 12px;border-radius:20px;
+}
+.tip::before{content:'✦ ';color:var(--gold);font-size:.6rem}
+
+/* tc clickable */
+.tc{cursor:pointer}
+
+/* ════════ COMMUNITY ════════ */
+.cm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.cm{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:22px;text-align:center;text-decoration:none;display:block;transition:all .22s}
+.cm:hover{border-color:var(--lav);transform:translateY(-3px)}
+.cm-ico{font-size:1.8rem;margin-bottom:9px}
+.cm-n{font-weight:600;color:var(--hi);font-size:.85rem;margin-bottom:4px}
+.cm-d{font-size:.75rem;color:var(--dim)}
+
+/* ════════ FAQ ════════ */
+.faq-list{max-width:700px}
+.fq{border-bottom:1px solid var(--line)}
+.fq:first-child{border-top:1px solid var(--line)}
+.fq-q{
+  padding:18px 0;display:flex;justify-content:space-between;align-items:center;
+  cursor:pointer;color:var(--hi);font-weight:500;font-size:.92rem;
+  transition:color .2s;gap:16px;user-select:none;
+}
+.fq-q:hover{color:var(--teal)}
+.fq-icon{
+  width:24px;height:24px;border:1px solid var(--line2);border-radius:6px;
+  display:grid;place-items:center;font-size:1rem;color:var(--dim);
+  flex-shrink:0;transition:all .3s var(--ease);
+}
+.fq.open .fq-icon{background:var(--teal);border-color:var(--teal);color:var(--bg);transform:rotate(45deg)}
+.fq-a{display:none;padding:0 0 18px;font-size:.85rem;color:var(--dim);line-height:1.75}
+.fq.open .fq-a{display:block}
+
+/* ════════ CTA ════════ */
+.cta-box{
+  background:var(--surf);border:1px solid var(--line);
+  border-radius:20px;padding:64px;text-align:center;
+  max-width:880px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+.cta-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(0,212,180,.07),transparent);
+  pointer-events:none;
+}
+.cta-pre{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--teal);letter-spacing:.12em;display:block;margin-bottom:14px}
+.cta-t{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);color:var(--hi);letter-spacing:-.03em;margin-bottom:12px;line-height:1.1}
+.cta-d{color:var(--dim);font-size:.9rem;margin-bottom:30px;max-width:400px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* ════════ FOOTER ════════ */
+footer{
+  border-top:1px solid var(--line);
+  padding:30px clamp(16px,4%,64px);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:14px;z-index:1;position:relative;
+}
+.ft-l{font-size:.75rem;color:var(--dim)}
+.ft-l span{color:var(--teal)}
+.ft-mono{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--line2);margin-top:3px}
+
+/* ════════ SCROLL REVEAL ════════ */
+.sr{opacity:0;transform:translateY(20px);transition:opacity .5s var(--ease2),transform .5s var(--ease2)}
+.sr.in{opacity:1;transform:translateY(0)}
+
+/* ════════ RESPONSIVE ════════ */
+@media(max-width:860px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-vis{display:none}
+  .nav-pills{display:none}
+  .cta-box{padding:36px 22px}
+}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:8px}
+
+/* ════════ CREATOR ════════ */
+.creator-section{background:var(--bg);}
+.creator-box{
+  max-width:1000px;margin:0 auto;
+  background:var(--surf);border:1px solid var(--line);
+  border-radius:20px;overflow:hidden;
+  display:grid;grid-template-columns:300px 1fr;
+  box-shadow:var(--sha);
+  position:relative;
+}
+.creator-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--teal),var(--lav),var(--gold));
+}
+.creator-photo-wrap{
+  position:relative;overflow:hidden;
+  background:var(--bg3);
+}
+.creator-photo-wrap img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+  filter:saturate(0.95);
+  transition:transform .5s var(--ease2),filter .3s;
+}
+.creator-box:hover .creator-photo-wrap img{
+  transform:scale(1.03);
+  filter:saturate(1);
+}
+.creator-photo-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  height:80px;
+  background:linear-gradient(transparent,var(--surf));
+}
+.creator-info{
+  padding:40px 40px 36px;
+  display:flex;flex-direction:column;gap:14px;
+}
+.creator-role{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;color:var(--teal);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.creator-name{
+  font-family:'DM Serif Display',serif;
+  font-size:2rem;color:var(--hi);
+  letter-spacing:-.04em;line-height:1.1;
+}
+.creator-dept{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;color:var(--dim);
+  background:var(--bg2);border:1px solid var(--line2);
+  padding:5px 12px;border-radius:6px;width:fit-content;
+}
+.creator-dept-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--sky);flex-shrink:0;
+}
+.creator-bio{
+  font-size:.88rem;color:var(--txt);
+  line-height:1.75;font-weight:400;
+  max-width:440px;
+}
+.creator-links{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;
+}
+.creator-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:600;
+  padding:8px 16px;border-radius:8px;
+  text-decoration:none;
+  transition:all .22s var(--ease2);
+  border:1px solid transparent;
+}
+.cl-github{
+  background:var(--hi);color:var(--bg);
+  border-color:var(--hi);
+}
+.cl-github:hover{background:transparent;color:var(--hi);border-color:var(--hi)}
+.cl-course{
+  background:rgba(0,212,180,.1);color:var(--teal);
+  border-color:rgba(0,212,180,.25);
+}
+.cl-course:hover{background:rgba(0,212,180,.18)}
+.creator-stats{
+  display:flex;gap:0;
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  margin-top:4px;width:fit-content;
+}
+.cs-item{
+  padding:10px 18px;background:var(--bg2);
+  border-right:1px solid var(--line);
+  transition:background .2s;
+}
+.cs-item:last-child{border-right:none}
+.cs-item:hover{background:var(--bg3)}
+.cs-n{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;color:var(--hi);line-height:1;margin-bottom:2px;
+}
+.cs-l{font-size:.62rem;color:var(--dim);letter-spacing:.05em}
+@media(max-width:700px){
+  .creator-box{grid-template-columns:1fr}
+  .creator-photo-wrap{height:280px}
+  .creator-info{padding:28px 22px}
+}
+
+
+/* ════════ BANGLA FONT OVERRIDE ════════ */
+body, nav, .nav-pills a, .btn-start, .btn-pri, .btn-sec,
+.hero-title, .hero-desc, .kpi-l, .hs-item,
+.h2, .lead, .pre, .pillar-title, .pillar-text,
+.ph-title, .wk-t, .wk-ul, .badge, .rc-title, .rc-desc,
+.tc-name, .tc-cat, .pj-title, .pj-desc,
+.rm-t, .rm-w, .fq-q, .fq-a,
+.cta-t, .cta-d, .cta-pre,
+.creator-role, .creator-bio, .creator-dept,
+.cs-l, .ft-l, .tog, .logo-text,
+.rc-by, .rc-link, .res-url, .creator-name,
+.cm-n, .cm-d, .s-tag, .stag, .r-tag,
+.hero-title .sm, .pj-badge, .sec-head .lead {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', 'DM Serif Display', 'Instrument Sans', sans-serif !important;
+}
+.logo-text {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  letter-spacing: 0 !important;
+}
+nav .nav-pills a {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: .88rem !important;
+}
+.btn-start {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: .88rem !important;
+  letter-spacing: 0 !important;
+}
+.tog {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-size: .78rem !important;
+}
+.hero-title {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -.01em !important;
+}
+.hero-title em {
+  font-style: normal !important;
+  font-weight: 800 !important;
+}
+.hero-title .sm {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: clamp(.8rem, 1.4vw, .95rem) !important;
+}
+.hero-desc {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 400 !important;
+  line-height: 1.9 !important;
+}
+.h2 {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -.01em !important;
+}
+.lead {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 400 !important;
+  line-height: 1.85 !important;
+}
+.badge {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: .04em !important;
+}
+.pillar-title {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.pillar-text {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  line-height: 1.85 !important;
+}
+.ph-title {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.wk-t {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+}
+.wk-ul {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+}
+.rc-title {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.rc-desc, .rc-by {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+}
+.tc-name { font-weight: 700 !important; }
+.pj-title {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+}
+.pj-badge {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: .03em !important;
+}
+.rm-t {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.fq-q {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 600 !important;
+}
+.fq-a {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  line-height: 1.9 !important;
+}
+.cta-t {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -.01em !important;
+}
+.cta-d, .cta-pre {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+}
+.btn-pri, .btn-sec {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+.creator-name {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -.01em !important;
+}
+.creator-role, .creator-dept {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 600 !important;
+}
+.creator-bio {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  line-height: 1.9 !important;
+}
+.creator-link {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+}
+.cs-l {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 600 !important;
+}
+.ft-l {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 500 !important;
+}
+.cm-n {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+}
+.cm-d {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+}
+.hs-item {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 500 !important;
+}
+.kpi-l {
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: .02em !important;
+}
+
+
+/* ════════ FONT SIZE OVERHAUL — VISIBILITY FIX ════════ */
+
+/* Base body font size up */
+body { font-size: 17px !important; }
+
+/* NAV */
+.logo-text {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+}
+.nav-pills a {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  padding: 6px 16px !important;
+}
+.btn-start {
+  font-size: .95rem !important;
+  font-weight: 800 !important;
+  padding: 9px 22px !important;
+}
+.tog {
+  font-size: .88rem !important;
+  font-weight: 600 !important;
+  padding: 7px 13px !important;
+}
+
+/* HERO */
+.eyebrow { font-size: .82rem !important; letter-spacing: .08em !important; }
+.hero-title {
+  font-size: clamp(2.6rem, 5.5vw, 4.6rem) !important;
+  line-height: 1.12 !important;
+}
+.hero-title .sm {
+  font-size: clamp(.95rem, 1.6vw, 1.1rem) !important;
+  margin-top: 14px !important;
+  line-height: 1.7 !important;
+}
+.hero-desc {
+  font-size: 1.08rem !important;
+  line-height: 1.95 !important;
+}
+.kpi-n { font-size: 1.9rem !important; }
+.kpi-l { font-size: .85rem !important; font-weight: 700 !important; }
+.btn-pri { font-size: 1rem !important; padding: 14px 30px !important; }
+.btn-sec { font-size: 1rem !important; padding: 14px 30px !important; }
+.hs-item { font-size: .88rem !important; font-weight: 600 !important; }
+
+/* BADGES */
+.badge { font-size: .78rem !important; padding: 5px 14px !important; font-weight: 700 !important; }
+.badge-row { margin-bottom: 24px !important; }
+
+/* SECTION LABELS (pre / tag labels) */
+.pre { font-size: .82rem !important; letter-spacing: .1em !important; font-weight: 700 !important; }
+
+/* SECTION TITLES */
+.h2 { font-size: clamp(2rem, 3.5vw, 2.8rem) !important; font-weight: 800 !important; line-height: 1.2 !important; }
+
+/* SECTION SUBTITLE */
+.lead { font-size: 1.05rem !important; line-height: 1.85 !important; font-weight: 400 !important; }
+
+/* PILLARS */
+.pillar-num { font-size: 3rem !important; }
+.pillar-title { font-size: 1.05rem !important; font-weight: 700 !important; margin-bottom: 10px !important; }
+.pillar-text { font-size: .95rem !important; line-height: 1.85 !important; }
+
+/* CURRICULUM PHASES */
+.ph-num { font-size: .78rem !important; font-weight: 700 !important; letter-spacing: .06em !important; }
+.ph-title { font-size: 1.08rem !important; font-weight: 700 !important; }
+.ph-meta { font-size: .82rem !important; }
+.phase-weeks { font-size: .82rem !important; font-weight: 700 !important; }
+.phase-duration { font-size: .8rem !important; }
+
+/* WEEK CARDS */
+.wk-wk { font-size: .75rem !important; font-weight: 700 !important; letter-spacing: .06em !important; }
+.wk-t { font-size: .97rem !important; font-weight: 700 !important; margin-bottom: 9px !important; }
+.wk-ul { font-size: .87rem !important; line-height: 1.95 !important; }
+.lnk { font-size: .76rem !important; padding: 4px 11px !important; }
+
+/* RESOURCES */
+.f-btn { font-size: .82rem !important; padding: 7px 18px !important; font-weight: 600 !important; }
+.rc-cat { font-size: .72rem !important; padding: 4px 11px !important; font-weight: 700 !important; letter-spacing: .08em !important; }
+.rc-title { font-size: 1.12rem !important; font-weight: 700 !important; line-height: 1.3 !important; }
+.rc-desc { font-size: .9rem !important; line-height: 1.8 !important; }
+.rc-gain { font-size: .82rem !important; padding: 6px 12px !important; }
+.r-tag { font-size: .72rem !important; padding: 3px 10px !important; font-weight: 600 !important; }
+.rc-by { font-size: .8rem !important; }
+.rc-link { font-size: .78rem !important; font-weight: 700 !important; }
+
+/* TOOLS */
+.tc-name { font-size: .95rem !important; font-weight: 700 !important; }
+.tc-cat { font-size: .8rem !important; margin-top: 5px !important; }
+.tc-icon { font-size: 2rem !important; }
+
+/* ROADMAP */
+.rm-pre { font-size: .74rem !important; font-weight: 700 !important; letter-spacing: .06em !important; }
+.rm-n { font-size: 2.4rem !important; }
+.rm-t { font-size: .97rem !important; font-weight: 700 !important; }
+.rm-w { font-size: .84rem !important; font-weight: 500 !important; }
+
+/* PROJECTS */
+.pj-badge { font-size: .75rem !important; padding: 4px 12px !important; font-weight: 700 !important; }
+.pj-title { font-size: 1.08rem !important; font-weight: 800 !important; }
+.pj-desc { font-size: .9rem !important; line-height: 1.75 !important; }
+.s-tag { font-size: .74rem !important; padding: 4px 11px !important; font-weight: 600 !important; }
+
+/* COMMUNITY */
+.comm-ico, .cm-ico { font-size: 2rem !important; }
+.cm-n, .comm-name { font-size: .97rem !important; font-weight: 700 !important; margin-bottom: 6px !important; }
+.cm-d, .comm-desc { font-size: .85rem !important; line-height: 1.6 !important; }
+
+/* FAQ */
+.fq-q { font-size: 1.02rem !important; font-weight: 700 !important; padding: 22px 0 !important; }
+.fq-a { font-size: .95rem !important; line-height: 1.9 !important; padding: 0 0 20px !important; }
+
+/* CTA */
+.cta-pre { font-size: .82rem !important; letter-spacing: .1em !important; font-weight: 700 !important; }
+.cta-t { font-size: clamp(1.9rem, 3vw, 2.8rem) !important; font-weight: 800 !important; line-height: 1.15 !important; }
+.cta-d { font-size: 1rem !important; line-height: 1.8 !important; margin-bottom: 32px !important; }
+
+/* CREATOR */
+.creator-role { font-size: .8rem !important; font-weight: 700 !important; letter-spacing: .1em !important; }
+.creator-name { font-size: 2rem !important; font-weight: 800 !important; line-height: 1.15 !important; }
+.creator-dept { font-size: .84rem !important; padding: 7px 14px !important; font-weight: 600 !important; }
+.creator-bio { font-size: .97rem !important; line-height: 1.95 !important; }
+.creator-link { font-size: .85rem !important; padding: 10px 18px !important; font-weight: 700 !important; }
+.cs-n { font-size: 1.2rem !important; }
+.cs-l { font-size: .78rem !important; font-weight: 700 !important; }
+
+/* FOOTER */
+.ft-l { font-size: .9rem !important; font-weight: 600 !important; }
+.ft-mono { font-size: .75rem !important; margin-top: 4px !important; }
+
+/* JetBrains Mono labels - make them more visible */
+.wk-wk, .rm-pre, .phase-weeks,
+.rc-cat, .r-tag, .lnk, .s-tag,
+.pj-badge, .badge, .pre, .cta-pre,
+.rc-link, .rc-by, .creator-role, .tog span {
+  letter-spacing: .04em !important;
+}
+
+/* Hero tag cloud */
+.tc-tag { font-size: .8rem !important; padding: 6px 14px !important; font-weight: 600 !important; }
+
+/* Hero strip checkmarks */
+.hs-item span { font-size: .8rem !important; }
+
+
+/* ════════ CLARITY FIX — DESCRIPTION & BODY TEXT ════════ */
+
+/* Resource card descriptions — was too dim */
+.rc-desc {
+  font-size: .97rem !important;
+  font-weight: 500 !important;
+  line-height: 1.85 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Resource card "what you'll gain" text */
+.rc-gain {
+  font-size: .86rem !important;
+  font-weight: 600 !important;
+  color: var(--hi) !important;
+}
+
+/* Resource card title */
+.rc-title {
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  color: var(--hi) !important;
+  line-height: 1.3 !important;
+}
+
+/* Resource card author */
+.rc-by {
+  font-size: .84rem !important;
+  font-weight: 600 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Week card topic lists */
+.wk-ul {
+  font-size: .9rem !important;
+  font-weight: 500 !important;
+  line-height: 2 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Week card title */
+.wk-t {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: var(--hi) !important;
+}
+
+/* Project descriptions */
+.pj-desc {
+  font-size: .95rem !important;
+  font-weight: 500 !important;
+  line-height: 1.8 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Pillar body text */
+.pillar-text {
+  font-size: .97rem !important;
+  font-weight: 500 !important;
+  line-height: 1.85 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Hero description */
+.hero-desc {
+  font-size: 1.08rem !important;
+  font-weight: 500 !important;
+  line-height: 1.95 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Lead / subtitle under section headings */
+.lead {
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  line-height: 1.85 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* FAQ answers */
+.fq-a {
+  font-size: .97rem !important;
+  font-weight: 500 !important;
+  line-height: 1.92 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* CTA description */
+.cta-d {
+  font-size: 1.02rem !important;
+  font-weight: 500 !important;
+  line-height: 1.8 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Creator bio */
+.creator-bio {
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  line-height: 1.95 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Community card description */
+.cm-d {
+  font-size: .9rem !important;
+  font-weight: 500 !important;
+  line-height: 1.65 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Roadmap week label */
+.rm-w {
+  font-size: .88rem !important;
+  font-weight: 500 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Hero strip items */
+.hs-item {
+  font-size: .9rem !important;
+  font-weight: 600 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Tool category under icon */
+.tc-cat {
+  font-size: .84rem !important;
+  font-weight: 500 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Phase meta (week range) */
+.ph-meta {
+  font-size: .86rem !important;
+  font-weight: 500 !important;
+  color: var(--txt) !important;
+  opacity: 1 !important;
+}
+
+/* Explicit color override for --dim elements to make them readable */
+[data-theme="dark"] .rc-desc,
+[data-theme="dark"] .lead,
+[data-theme="dark"] .hero-desc,
+[data-theme="dark"] .fq-a,
+[data-theme="dark"] .pj-desc,
+[data-theme="dark"] .pillar-text,
+[data-theme="dark"] .wk-ul,
+[data-theme="dark"] .cm-d,
+[data-theme="dark"] .creator-bio,
+[data-theme="dark"] .cta-d,
+[data-theme="dark"] .rm-w,
+[data-theme="dark"] .hs-item,
+[data-theme="dark"] .tc-cat,
+[data-theme="dark"] .ph-meta,
+[data-theme="dark"] .rc-by {
+  color: #c8ccee !important;
+}
+
+[data-theme="light"] .rc-desc,
+[data-theme="light"] .lead,
+[data-theme="light"] .hero-desc,
+[data-theme="light"] .fq-a,
+[data-theme="light"] .pj-desc,
+[data-theme="light"] .pillar-text,
+[data-theme="light"] .wk-ul,
+[data-theme="light"] .cm-d,
+[data-theme="light"] .creator-bio,
+[data-theme="light"] .cta-d,
+[data-theme="light"] .rm-w,
+[data-theme="light"] .hs-item,
+[data-theme="light"] .tc-cat,
+[data-theme="light"] .ph-meta,
+[data-theme="light"] .rc-by {
+  color: #2e3150 !important;
+}
+
+</style>
+</head>
+<body>
+<div class="bg-deco"></div>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">NP</div>
+    <span class="logo-text">নিউরালপাথ</span>
+  </a>
+  <div class="nav-pills">
+    <a href="#curriculum">কোর্সের বিস্তারিত</a>
+    <a href="#resources">রিসোর্সসমূহ</a>
+    <a href="#projects">প্রজেক্টস</a>
+    <a href="#faq">প্রশ্নোত্তর</a>
+  </div>
+  <div class="nav-r">
+    <div class="tog" id="togBtn">
+      <div class="tog-knob"></div>
+      <span id="togLabel">ডার্ক</span>
+    </div>
+    <a href="#curriculum" class="btn-start">বিনামূল্যে শুরু →</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="badge-row sr">
+        <span class="badge badge-free">১০০% বিনামূল্যে</span>
+        <div class="badge-dot"></div>
+        <span class="badge badge-open">ওপেন সোর্স</span>
+        <div class="badge-dot"></div>
+        <span class="badge badge-free">সাইনআপ ছাড়া</span>
+      </div>
+      <h1 class="hero-title">
+        হয়ে ওঠো<br>
+        <em>AI/ML বিশেষজ্ঞ</em><br>
+        একেবারে শূন্য থেকে।
+        <span class="sm">শূন্য → গবেষণা প্রকাশনা · ৪৮ সপ্তাহ · সম্পূর্ণ বিনামূল্যে</span>
+      </h1>
+      <p class="hero-desc">
+        সম্পূর্ণ কাঠামোবদ্ধ ও বিনামূল্যের একটি পূর্ণাঙ্গ পাঠ্যক্রম — Python-এর মূল বিষয় থেকে শুরু করে LLM, ডিপ লার্নিং এবং তোমার প্রথম গবেষণাপত্র প্রকাশ পর্যন্ত। প্রতিটি টুল ওপেন-সোর্স। প্রতিটি GPU বিনামূল্যে।
+      </p>
+      <div class="hero-kpis sr">
+        <div class="kpi"><div class="kpi-n">48</div><div class="kpi-l">সপ্তাহ</div></div>
+        <div class="kpi"><div class="kpi-n">10</div><div class="kpi-l">ধাপ</div></div>
+        <div class="kpi"><div class="kpi-n">60+</div><div class="kpi-l">রিসোর্স</div></div>
+        <div class="kpi"><div class="kpi-n">$0</div><div class="kpi-l">খরচ</div></div>
+      </div>
+      <div class="hero-btns">
+        <a href="#curriculum" class="btn-pri">⚡ শেখা শুরু করো</a>
+        <a href="#resources" class="btn-sec">📚 রিসোর্স দেখো</a>
+      </div>
+    </div>
+    <div class="hero-vis">
+      <div class="big-number">AI<span>v3.0 free</span></div>
+      <div class="tag-cloud">
+        <span class="tc-tag hot">Python</span>
+        <span class="tc-tag hot">PyTorch</span>
+        <span class="tc-tag hot">HuggingFace</span>
+        <span class="tc-tag">NumPy</span>
+        <span class="tc-tag">Pandas</span>
+        <span class="tc-tag hot">LLMs</span>
+        <span class="tc-tag">RAG</span>
+        <span class="tc-tag hot">Colab GPU</span>
+        <span class="tc-tag">Kaggle</span>
+        <span class="tc-tag">CNNs</span>
+        <span class="tc-tag hot">Transformers</span>
+        <span class="tc-tag">LoRA</span>
+        <span class="tc-tag">FAISS</span>
+        <span class="tc-tag">arXiv</span>
+        <span class="tc-tag hot">Streamlit</span>
+        <span class="tc-tag">LaTeX</span>
+        <span class="tc-tag">MLflow</span>
+        <span class="tc-tag">Optuna</span>
+      </div>
+    </div>
+    <div class="hero-strip">
+      <div class="hs-item"><span>✓</span> Colab GPU — সম্পূর্ণ বিনামূল্যে</div>
+      <div class="hs-item"><span>✓</span> Kaggle ডেটাসেট — কোনো খরচ নেই</div>
+      <div class="hs-item"><span>✓</span> HuggingFace Spaces — ফ্রি ডেপ্লয়</div>
+      <div class="hs-item"><span>✓</span> Ollama — লোকাল LLM, শূন্য API খরচ</div>
+      <div class="hs-item"><span>✓</span> arXiv — বিনামূল্যে পেপার প্রকাশ</div>
+      <div class="hs-item"><span>✓</span> Overleaf — ফ্রি LaTeX এডিটর</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CURRICULUM ══ -->
+<section id="curriculum" class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// সম্পূর্ণ পাঠ্যক্রম</span>
+      <h2 class="h2">10 Phases. One Complete Path.</h2>
+      <p class="lead">Click any phase to expand. Free video + resource links inside every week.</p>
+    </div>
+    <div class="phase-list">
+
+      <div class="ph open sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 01</span>
+          <span class="ph-title">Python, Colab & Dev Environment</span>
+          <div class="ph-meta"><span>Wk 1–3</span><b>3 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 01</div><div class="wk-t">Python Fundamentals</div><ul class="wk-ul"><li>Variables, loops, functions, OOP</li><li>Comprehensions, generators</li><li>File I/O & exceptions</li><li>pip & virtual environments</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=_uQrJ0TkZlc" target="_blank">▶ CS Dojo</a><a class="lnk" href="https://docs.python.org/3/tutorial/" target="_blank">📖 Docs</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 02</div><div class="wk-t">Google Colab & Kaggle GPU</div><ul class="wk-ul"><li>Colab GPU runtime setup</li><li>Kaggle free GPU & datasets</li><li>Drive persistence</li><li>Exporting results</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=inN8seMm7UI" target="_blank">▶ Tutorial</a><a class="lnk g" href="https://www.kaggle.com/learn" target="_blank">🎓 Kaggle</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 03</div><div class="wk-t">Git & Project Structure</div><ul class="wk-ul"><li>Git init, commit, push, PR</li><li>Branching strategies</li><li>ML project folder layout</li><li>README & docs</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank">▶ Crash Course</a><a class="lnk" href="https://github.com" target="_blank">⭐ GitHub</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 02</span>
+          <span class="ph-title">NumPy, Pandas & Visualization</span>
+          <div class="ph-meta"><span>Wk 4–6</span><b>3 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 04</div><div class="wk-t">NumPy Essentials</div><ul class="wk-ul"><li>Arrays, dtypes, broadcasting</li><li>Indexing, slicing, boolean masks</li><li>Linear algebra: matmul, einsum</li><li>Vectorization & memory layout</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=QUT1VHiLmmI" target="_blank">▶ Tutorial</a><a class="lnk" href="https://numpy.org/learn/" target="_blank">📖 Docs</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 05</div><div class="wk-t">Pandas Mastery</div><ul class="wk-ul"><li>DataFrame, loc/iloc, filtering</li><li>GroupBy, merge & joins</li><li>Pivot, melt, reshape</li><li>Missing values & imputation</li></ul><div class="wk-links"><a class="lnk g" href="https://www.kaggle.com/learn/pandas" target="_blank">🎓 Kaggle</a><a class="lnk" href="https://pandas.pydata.org/docs/" target="_blank">📖 Docs</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 06</div><div class="wk-t">Matplotlib & Seaborn</div><ul class="wk-ul"><li>Subplots, styling, annotations</li><li>KDE, violin, box plots</li><li>Categorical & scatter plots</li><li>Publication-quality figures</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=OZOOLe2imFo" target="_blank">▶ Tutorial</a><a class="lnk" href="https://seaborn.pydata.org/tutorial.html" target="_blank">📖 Seaborn</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 03</span>
+          <span class="ph-title">Data Cleaning, EDA & Feature Engineering</span>
+          <div class="ph-meta"><span>Wk 7–9</span><b>3 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 07</div><div class="wk-t">Data Cleaning</div><ul class="wk-ul"><li>MCAR, MAR, MNAR patterns</li><li>Outlier detection & treatment</li><li>Advanced imputation</li><li>Data quality audit</li></ul><div class="wk-links"><a class="lnk g" href="https://www.kaggle.com/learn/data-cleaning" target="_blank">🎓 Kaggle</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 08</div><div class="wk-t">Feature Engineering</div><ul class="wk-ul"><li>Encoding: ordinal, one-hot, target</li><li>Scaling & normalization</li><li>Datetime features</li><li>Domain-specific features</li></ul><div class="wk-links"><a class="lnk g" href="https://www.kaggle.com/learn/feature-engineering" target="_blank">🎓 Kaggle FE</a><a class="lnk c" href="https://www.youtube.com/watch?v=9yl6-HEY7_s" target="_blank">▶ Tutorial</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 09</div><div class="wk-t">Exploratory Data Analysis</div><ul class="wk-ul"><li>Uni/bivariate analysis</li><li>Correlation heatmaps</li><li>Automated EDA: ydata, Sweetviz</li><li>Storytelling with data</li></ul><div class="wk-links"><a class="lnk" href="https://github.com/ydataai/ydata-profiling" target="_blank">⭐ ydata</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 04</span>
+          <span class="ph-title">Classical Machine Learning</span>
+          <div class="ph-meta"><span>Wk 10–15</span><b>6 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 10–11</div><div class="wk-t">Regression & Classification</div><ul class="wk-ul"><li>Linear, Ridge, Lasso, ElasticNet</li><li>Logistic regression, KNN, SVM</li><li>Decision trees, Naive Bayes</li><li>Precision, recall, F1, ROC-AUC</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=pqNCD_5r0IU" target="_blank">▶ StatQuest</a><a class="lnk" href="https://scikit-learn.org/stable/" target="_blank">📖 sklearn</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 12–13</div><div class="wk-t">Ensemble Methods</div><ul class="wk-ul"><li>Random Forest & bagging</li><li>XGBoost, LightGBM, CatBoost</li><li>Stacking & blending</li><li>Feature importance</li></ul><div class="wk-links"><a class="lnk" href="https://xgboost.readthedocs.io/" target="_blank">📖 XGBoost</a><a class="lnk g" href="https://www.kaggle.com/learn/intro-to-ml" target="_blank">🎓 Kaggle</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 14–15</div><div class="wk-t">Unsupervised & Tuning</div><ul class="wk-ul"><li>K-Means, DBSCAN, hierarchical</li><li>PCA, t-SNE, UMAP</li><li>Cross-validation strategies</li><li>Optuna hyperparameter search</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=FgakZw6K1QQ" target="_blank">▶ Clustering</a><a class="lnk" href="https://optuna.org/" target="_blank">⭐ Optuna</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 05</span>
+          <span class="ph-title">Deep Learning with PyTorch</span>
+          <div class="ph-meta"><span>Wk 16–22</span><b>7 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 16–17</div><div class="wk-t">Neural Networks & Autograd</div><ul class="wk-ul"><li>Perceptrons, backprop, activations</li><li>PyTorch tensors & autograd</li><li>Training loops & optimizers</li><li>GPU training on Colab free tier</li></ul><div class="wk-links"><a class="lnk" href="https://pytorch.org/tutorials/" target="_blank">📖 PyTorch</a><a class="lnk c" href="https://www.youtube.com/watch?v=c36lUUr864M" target="_blank">▶ 3B1B</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 18–19</div><div class="wk-t">CNNs & Computer Vision</div><ul class="wk-ul"><li>Conv layers, pooling, ResNet</li><li>Transfer learning & fine-tuning</li><li>Image classification & detection</li><li>torchvision free datasets</li></ul><div class="wk-links"><a class="lnk" href="https://cs231n.github.io/" target="_blank">📖 CS231n</a><a class="lnk g" href="https://www.kaggle.com/learn/computer-vision" target="_blank">🎓 Kaggle</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 20–22</div><div class="wk-t">RNNs & Best Practices</div><ul class="wk-ul"><li>RNN, LSTM, GRU, Seq2seq</li><li>Batch norm, dropout, weight init</li><li>LR schedulers, mixed precision</li><li>Gradient clipping</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=AsNTP8Kwu80" target="_blank">▶ LSTM</a><a class="lnk" href="https://d2l.ai/" target="_blank">📖 d2l.ai</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 06</span>
+          <span class="ph-title">NLP & Transformers</span>
+          <div class="ph-meta"><span>Wk 23–28</span><b>6 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 23–24</div><div class="wk-t">NLP Fundamentals</div><ul class="wk-ul"><li>Tokenization, BoW, TF-IDF</li><li>Word2Vec, GloVe embeddings</li><li>Text classification & sentiment</li><li>spaCy & NLTK</li></ul><div class="wk-links"><a class="lnk c" href="https://www.youtube.com/watch?v=8rXD5-xhemo" target="_blank">▶ NLP Hero</a><a class="lnk" href="https://www.nltk.org/" target="_blank">📖 NLTK</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 25–26</div><div class="wk-t">Transformer Architecture</div><ul class="wk-ul"><li>Self-attention & multi-head</li><li>Positional encoding</li><li>BERT & GPT deep dives</li><li>"Attention is All You Need" walkthrough</li></ul><div class="wk-links"><a class="lnk" href="https://jalammar.github.io/illustrated-transformer/" target="_blank">📖 Illustrated</a><a class="lnk" href="https://arxiv.org/abs/1706.03762" target="_blank">📄 Paper</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 27–28</div><div class="wk-t">HuggingFace & Fine-tuning</div><ul class="wk-ul"><li>Transformers library & pipelines</li><li>Fine-tune BERT for text tasks</li><li>Datasets & tokenizers</li><li>Push to HF Hub (free)</li></ul><div class="wk-links"><a class="lnk g" href="https://huggingface.co/course" target="_blank">🎓 HF Course</a><a class="lnk" href="https://huggingface.co/models" target="_blank">🤗 Hub</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 07</span>
+          <span class="ph-title">Large Language Models (LLMs)</span>
+          <div class="ph-meta"><span>Wk 29–34</span><b>6 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 29–30</div><div class="wk-t">LLM Fundamentals & Prompting</div><ul class="wk-ul"><li>GPT architecture deep dive</li><li>Pre-training & emergent abilities</li><li>Prompt engineering techniques</li><li>Run Mistral/Llama with Ollama</li></ul><div class="wk-links"><a class="lnk g" href="https://www.deeplearning.ai/short-courses/" target="_blank">🎓 DeepLearning.AI</a><a class="lnk" href="https://ollama.ai/" target="_blank">🦙 Ollama</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 31–32</div><div class="wk-t">Fine-tuning: LoRA & QLoRA</div><ul class="wk-ul"><li>PEFT: LoRA, QLoRA, prefix tuning</li><li>Fine-tune on Colab free GPU</li><li>RLHF basics</li><li>ROUGE / BERTScore evaluation</li></ul><div class="wk-links"><a class="lnk" href="https://github.com/huggingface/peft" target="_blank">⭐ PEFT</a><a class="lnk" href="https://huggingface.co/docs/trl/" target="_blank">📖 TRL</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 33–34</div><div class="wk-t">RAG & LLM Applications</div><ul class="wk-ul"><li>Vector DBs: Chroma, FAISS</li><li>Retrieval-Augmented Generation</li><li>LangChain & LlamaIndex</li><li>Build a doc Q&A app — free</li></ul><div class="wk-links"><a class="lnk" href="https://python.langchain.com/docs/" target="_blank">📖 LangChain</a><a class="lnk" href="https://github.com/chroma-core/chroma" target="_blank">⭐ Chroma</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 08</span>
+          <span class="ph-title">MLOps & Free Deployment</span>
+          <div class="ph-meta"><span>Wk 35–38</span><b>4 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 35–36</div><div class="wk-t">Experiment Tracking</div><ul class="wk-ul"><li>MLflow (open-source)</li><li>W&B free tier</li><li>DVC for data versioning</li><li>Automated pipelines</li></ul><div class="wk-links"><a class="lnk" href="https://mlflow.org/" target="_blank">📖 MLflow</a><a class="lnk" href="https://wandb.ai/site" target="_blank">📊 W&B</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 37–38</div><div class="wk-t">Deploy for Free</div><ul class="wk-ul"><li>FastAPI model serving</li><li>Docker basics</li><li>HuggingFace Spaces (free)</li><li>Gradio & Streamlit demos</li></ul><div class="wk-links"><a class="lnk" href="https://huggingface.co/spaces" target="_blank">🤗 Spaces</a><a class="lnk" href="https://streamlit.io/" target="_blank">🎈 Streamlit</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 09</span>
+          <span class="ph-title">Reading & Conducting AI Research</span>
+          <div class="ph-meta"><span>Wk 39–42</span><b>4 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 39–40</div><div class="wk-t">Reading Research Papers</div><ul class="wk-ul"><li>How to read ML papers fast</li><li>arXiv navigation & alerts</li><li>Paper notes & summaries</li><li>Connected Papers tool</li></ul><div class="wk-links"><a class="lnk" href="https://arxiv.org/list/cs.LG/recent" target="_blank">📄 arXiv</a><a class="lnk" href="https://paperswithcode.com/" target="_blank">📊 PwC</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 41–42</div><div class="wk-t">Research Methodology</div><ul class="wk-ul"><li>Hypothesis & experiment design</li><li>Statistical significance</li><li>Ablation studies</li><li>Writing a literature review</li></ul><div class="wk-links"><a class="lnk" href="https://www.connectedpapers.com/" target="_blank">🔗 Connected Papers</a></div></div>
+        </div></div>
+      </div>
+
+      <div class="ph sr">
+        <div class="ph-row" onclick="togglePh(this.parentElement)">
+          <span class="ph-num">Phase 10</span>
+          <span class="ph-title">Thesis Writing & First Publication</span>
+          <div class="ph-meta"><span>Wk 43–48</span><b>6 weeks</b></div>
+          <div class="ph-arrow">+</div>
+        </div>
+        <div class="ph-body"><div class="wk-grid">
+          <div class="wk"><div class="wk-wk">Week 43–44</div><div class="wk-t">LaTeX & Academic Writing</div><ul class="wk-ul"><li>Overleaf (free) & LaTeX basics</li><li>IEEE & ACL templates</li><li>BibTeX citations</li><li>Figures, tables, equations</li></ul><div class="wk-links"><a class="lnk" href="https://www.overleaf.com/learn" target="_blank">📖 Overleaf</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 45–46</div><div class="wk-t">Capstone Research Project</div><ul class="wk-ul"><li>Define a novel ML problem</li><li>Full experiment + ablation study</li><li>Write complete paper draft</li><li>Community peer feedback</li></ul><div class="wk-links"><a class="lnk" href="https://paperswithcode.com/sota" target="_blank">📊 SOTA</a></div></div>
+          <div class="wk"><div class="wk-wk">Week 47–48</div><div class="wk-t">Submit & Publish</div><ul class="wk-ul"><li>Submit preprint to arXiv</li><li>OpenReview workshops</li><li>Responding to reviewers</li><li>Build your Google Scholar profile</li></ul><div class="wk-links"><a class="lnk" href="https://arxiv.org/submit" target="_blank">📄 arXiv</a><a class="lnk" href="https://openreview.net/" target="_blank">🔍 OpenReview</a></div></div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESOURCES — THE STAR ══ -->
+<section id="resources" class="sec res-section">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// বিনামূল্যের রিসোর্স লাইব্রেরি</span>
+      <h2 class="h2">৬০+ রিসোর্স।<br><em style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--teal)">প্রতিটি সম্পূর্ণ বিনামূল্যে।</em></h2>
+      <p class="lead">ধরন অনুযায়ী ফিল্টার করো। প্রতিটি কার্ডে কঠিনতা, কী শিখবে এবং সরাসরি লিংক আছে। কোনো পেওয়াল নেই।</p>
+    </div>
+
+    <div class="filter-bar sr" id="filterBar">
+      <button class="f-btn active" data-f="all">সব (৬০+)</button>
+      <button class="f-btn" data-f="course">📚 কোর্স</button>
+      <button class="f-btn" data-f="video">▶ ভিডিও</button>
+      <button class="f-btn" data-f="book">📖 বই</button>
+      <button class="f-btn" data-f="tool">🛠 টুলস</button>
+      <button class="f-btn" data-f="research">🔬 গবেষণা</button>
+    </div>
+
+    <div class="res-board" id="resBoard">
+
+      <!-- ══ COURSES ══ -->
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Kaggle Learn — Full Track</div>
+          <div class="rc-desc">Micro-courses covering Python, Pandas, ML, Deep Learning, NLP, SQL, and Feature Engineering. Each course gives a free certificate and takes 3–5 hours.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Free certificate included</div>
+          <div class="rc-tags"><span class="r-tag">Python</span><span class="r-tag">ML</span><span class="r-tag">DL</span><span class="r-tag">NLP</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Kaggle</span><a class="rc-link" href="https://www.kaggle.com/learn" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">DeepLearning.AI Short Courses</div>
+          <div class="rc-desc">Free short courses (2–4 hrs each) on ChatGPT APIs, LangChain, LLMOps, RAG, Fine-tuning, Prompt Engineering, and more. By Andrew Ng's team.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>LLMs, RAG, Fine-tuning</div>
+          <div class="rc-tags"><span class="r-tag">LLMs</span><span class="r-tag">RAG</span><span class="r-tag">Prompting</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by DeepLearning.AI</span><a class="rc-link" href="https://www.deeplearning.ai/short-courses/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">HuggingFace NLP Course</div>
+          <div class="rc-desc">Complete free NLP course covering Transformers, tokenizers, fine-tuning BERT/GPT, datasets, and deployment. Interactive notebooks, all free.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Transformers from scratch</div>
+          <div class="rc-tags"><span class="r-tag">BERT</span><span class="r-tag">GPT</span><span class="r-tag">Tokenizers</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by HuggingFace</span><a class="rc-link" href="https://huggingface.co/learn/nlp-course" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Fast.ai — Practical Deep Learning</div>
+          <div class="rc-desc">Top-down DL course using PyTorch. Free Jupyter notebooks, incredible forum. Takes you from basics to cutting-edge models. Loved by practitioners worldwide.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Practical DL, real models</div>
+          <div class="rc-tags"><span class="r-tag">PyTorch</span><span class="r-tag">CNNs</span><span class="r-tag">NLP</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Jeremy Howard</span><a class="rc-link" href="https://www.fast.ai/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">CS231n — Visual Recognition</div>
+          <div class="rc-desc">Stanford's legendary computer vision course. Full lecture notes, slides, and coding assignments free online. The gold standard for learning CNNs.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>CNNs, detection, segmentation</div>
+          <div class="rc-tags"><span class="r-tag">CNNs</span><span class="r-tag">ResNet</span><span class="r-tag">Detection</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Stanford</span><a class="rc-link" href="https://cs231n.github.io/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">CS224n — NLP with Deep Learning</div>
+          <div class="rc-desc">Stanford's NLP with deep learning course. Free lecture slides, videos on YouTube, and assignments covering word vectors, transformers, and generation.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>NLP research-level knowledge</div>
+          <div class="rc-tags"><span class="r-tag">NLP</span><span class="r-tag">Transformers</span><span class="r-tag">Generation</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Stanford</span><a class="rc-link" href="https://web.stanford.edu/class/cs224n/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="course">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Course</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Full Stack Deep Learning</div>
+          <div class="rc-desc">Free course covering the full ML lifecycle — from training to production deployment. Labs, videos, and infrastructure material all available free.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Production ML, MLOps</div>
+          <div class="rc-tags"><span class="r-tag">MLOps</span><span class="r-tag">Production</span><span class="r-tag">Deploy</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by FSDL Team</span><a class="rc-link" href="https://fullstackdeeplearning.com/course/" target="_blank">Open →</a></div>
+      </div>
+
+      <!-- ══ VIDEOS ══ -->
+      <div class="rc sr" data-cat="video">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Video</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">3Blue1Brown — Neural Networks</div>
+          <div class="rc-desc">Breathtaking animated series explaining neural networks, backpropagation, and gradient descent with mathematical precision. Essential first watch for every learner.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Visual intuition for deep learning</div>
+          <div class="rc-tags"><span class="r-tag">Math</span><span class="r-tag">Backprop</span><span class="r-tag">Intuition</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Grant Sanderson</span><a class="rc-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi" target="_blank">Watch →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="video">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Video</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">StatQuest with Josh Starmer</div>
+          <div class="rc-desc">The clearest explanations of ML algorithms on the internet. Every video builds intuition from scratch: SVMs, random forests, PCA, UMAP, Transformers, and more.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Deep algorithmic understanding</div>
+          <div class="rc-tags"><span class="r-tag">Stats</span><span class="r-tag">ML</span><span class="r-tag">DL</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Josh Starmer</span><a class="rc-link" href="https://www.youtube.com/@statquest" target="_blank">Watch →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="video">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Video</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Andrej Karpathy — Neural Nets: Zero to Hero</div>
+          <div class="rc-desc">Build GPT from scratch, character-level language models, and neural nets step by step in Python. The most hands-on LLM tutorial that exists, from an OpenAI co-founder.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Build GPT from scratch</div>
+          <div class="rc-tags"><span class="r-tag">GPT</span><span class="r-tag">LLMs</span><span class="r-tag">From Scratch</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Andrej Karpathy</span><a class="rc-link" href="https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ" target="_blank">Watch →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="video">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Video</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Sentdex — Python ML Tutorials</div>
+          <div class="rc-desc">Massive playlist of practical ML and DL tutorials using scikit-learn, PyTorch, and TensorFlow. Great for seeing real code applied to real problems.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Practical code walkthroughs</div>
+          <div class="rc-tags"><span class="r-tag">sklearn</span><span class="r-tag">PyTorch</span><span class="r-tag">Projects</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Harrison Kinsley</span><a class="rc-link" href="https://www.youtube.com/@sentdex" target="_blank">Watch →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="video">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Video</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Yannic Kilcher — Paper Explanations</div>
+          <div class="rc-desc">Deep dives into landmark ML papers: GPT-4, AlphaFold, Diffusion models, LLaMA, and more. Perfect for Phase 9 when you start reading research papers seriously.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>ML paper comprehension</div>
+          <div class="rc-tags"><span class="r-tag">Research</span><span class="r-tag">Papers</span><span class="r-tag">LLMs</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Yannic Kilcher</span><a class="rc-link" href="https://www.youtube.com/@YannicKilcher" target="_blank">Watch →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="video">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Video</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">CS Dojo — Python for Beginners</div>
+          <div class="rc-desc">Friendly, well-paced intro to Python. Great as your Phase 01 companion. Covers all the fundamentals in short digestible episodes.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Python zero to comfortable</div>
+          <div class="rc-tags"><span class="r-tag">Python</span><span class="r-tag">Beginner</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by CS Dojo</span><a class="rc-link" href="https://www.youtube.com/@CSDojo" target="_blank">Watch →</a></div>
+      </div>
+
+      <!-- ══ BOOKS ══ -->
+      <div class="rc sr" data-cat="book">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Book</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Dive Into Deep Learning (d2l.ai)</div>
+          <div class="rc-desc">Free interactive DL textbook with live PyTorch + MXNet code, Colab notebooks, and math. Used at Stanford, MIT, and Carnegie Mellon. Covers everything from linear algebra to Transformers.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>University-grade DL textbook</div>
+          <div class="rc-tags"><span class="r-tag">PyTorch</span><span class="r-tag">Math</span><span class="r-tag">Transformers</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Aston Zhang et al.</span><a class="rc-link" href="https://d2l.ai/" target="_blank">Read →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="book">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Book</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Hands-On ML with Scikit-Learn & TF</div>
+          <div class="rc-desc">The most practical ML book available. All notebooks are free on GitHub. Covers classical ML, CNNs, RNNs, and more with real code examples.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Practical ML from cover to cover</div>
+          <div class="rc-tags"><span class="r-tag">sklearn</span><span class="r-tag">TF</span><span class="r-tag">Practical</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Aurélien Géron</span><a class="rc-link" href="https://github.com/ageron/handson-ml3" target="_blank">Read →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="book">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Book</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">The Little Book of Deep Learning</div>
+          <div class="rc-desc">A compact, beautifully typeset free PDF covering the entire DL landscape — from tensor operations to Transformers and diffusion models. 200 pages of pure signal.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>DL overview, print-worthy</div>
+          <div class="rc-tags"><span class="r-tag">DL</span><span class="r-tag">Transformers</span><span class="r-tag">Diffusion</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by François Fleuret</span><a class="rc-link" href="https://fleuret.org/public/lbdl.pdf" target="_blank">Read →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="book">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Book</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Illustrated Machine Learning</div>
+          <div class="rc-desc">A free visual guide by Jay Alammar — the Illustrated Transformer, Illustrated BERT, Illustrated Word2Vec, and more. Some of the clearest visual ML explanations online.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Visual intuition for Transformers</div>
+          <div class="rc-tags"><span class="r-tag">BERT</span><span class="r-tag">GPT</span><span class="r-tag">Visuals</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Jay Alammar</span><a class="rc-link" href="https://jalammar.github.io/" target="_blank">Read →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="book">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Book</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Mathematics for Machine Learning</div>
+          <div class="rc-desc">Free PDF covering linear algebra, calculus, probability, and optimisation specifically for ML. Used as a companion for understanding why algorithms work.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Math foundations for ML</div>
+          <div class="rc-tags"><span class="r-tag">Linear Algebra</span><span class="r-tag">Calculus</span><span class="r-tag">Probability</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Deisenroth, Faisal, Ong</span><a class="rc-link" href="https://mml-book.github.io/" target="_blank">Read →</a></div>
+      </div>
+
+      <!-- ══ TOOLS ══ -->
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Google Colab — Free GPU Notebooks</div>
+          <div class="rc-desc">Run Jupyter notebooks with free T4/A100 GPU in your browser. No setup, no installation. The backbone of this entire curriculum — use it for all your training runs.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Free GPU cloud compute</div>
+          <div class="rc-tags"><span class="r-tag">GPU</span><span class="r-tag">Jupyter</span><span class="r-tag">Cloud</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Google</span><a class="rc-link" href="https://colab.research.google.com" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Kaggle — Free GPU + Datasets</div>
+          <div class="rc-desc">30 hours/week of free GPU/TPU compute, thousands of public datasets, and a global competition platform. Your primary dataset source throughout the curriculum.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Free GPU + 50,000+ datasets</div>
+          <div class="rc-tags"><span class="r-tag">GPU</span><span class="r-tag">Datasets</span><span class="r-tag">Competitions</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Google / Kaggle</span><a class="rc-link" href="https://www.kaggle.com" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">HuggingFace Hub + Spaces</div>
+          <div class="rc-desc">Host models, datasets, and live Gradio/Streamlit apps for free. 300,000+ free models to download and fine-tune. Your portfolio platform for Phase 6 onward.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Free model hosting & deployment</div>
+          <div class="rc-tags"><span class="r-tag">Models</span><span class="r-tag">Deploy</span><span class="r-tag">Gradio</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by HuggingFace</span><a class="rc-link" href="https://huggingface.co/spaces" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Ollama — Local LLMs, Zero Cost</div>
+          <div class="rc-desc">Run Llama 3, Mistral, Gemma, Phi-3 and more entirely on your own machine. No API keys, no billing. Essential for Phase 7 RAG projects without any cost.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Local LLMs, no API cost ever</div>
+          <div class="rc-tags"><span class="r-tag">LLMs</span><span class="r-tag">Local</span><span class="r-tag">RAG</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Ollama</span><a class="rc-link" href="https://ollama.ai/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Weights & Biases (Free Tier)</div>
+          <div class="rc-desc">The best experiment tracker for ML. Free tier includes unlimited projects, interactive charts, hyperparameter sweeps, and model versioning. Used by every serious ML team.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Experiment tracking & sweeps</div>
+          <div class="rc-tags"><span class="r-tag">MLOps</span><span class="r-tag">Tracking</span><span class="r-tag">Sweeps</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Weights & Biases</span><a class="rc-link" href="https://wandb.ai/site" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Overleaf — Free LaTeX Editor</div>
+          <div class="rc-desc">Write research papers in LaTeX, right in your browser. Free tier includes all templates (IEEE, ACL, NeurIPS). Your tool for Phase 10 thesis and paper writing.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Write papers like a researcher</div>
+          <div class="rc-tags"><span class="r-tag">LaTeX</span><span class="r-tag">Papers</span><span class="r-tag">IEEE</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Overleaf</span><a class="rc-link" href="https://www.overleaf.com" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="tool">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Tool</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Streamlit — Free App Deployment</div>
+          <div class="rc-desc">Turn Python scripts into shareable web apps in minutes. Free Community Cloud hosting. Deploy your ML demos, dashboards, and chatbots publicly with one command.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Share ML apps instantly</div>
+          <div class="rc-tags"><span class="r-tag">Deploy</span><span class="r-tag">Apps</span><span class="r-tag">Dashboard</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Streamlit</span><a class="rc-link" href="https://streamlit.io/" target="_blank">Open →</a></div>
+      </div>
+
+      <!-- ══ RESEARCH ══ -->
+      <div class="rc sr" data-cat="research">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Research</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">Papers With Code</div>
+          <div class="rc-desc">Find the latest ML papers with open-source code, track state-of-the-art benchmarks, and discover trending methods. Use this daily once you reach Phase 9.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Stay current with SOTA research</div>
+          <div class="rc-tags"><span class="r-tag">SOTA</span><span class="r-tag">Benchmarks</span><span class="r-tag">Code</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Papers With Code</span><a class="rc-link" href="https://paperswithcode.com/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="research">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Research</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">arXiv — CS.LG & CS.AI</div>
+          <div class="rc-desc">Every ML paper published lands here for free. Subscribe to daily/weekly digests for cs.LG, cs.CL, stat.ML. The single most important research resource in ML.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Read every ML paper ever</div>
+          <div class="rc-tags"><span class="r-tag">Preprints</span><span class="r-tag">cs.LG</span><span class="r-tag">Free</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Cornell University</span><a class="rc-link" href="https://arxiv.org/list/cs.LG/recent" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="research">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Research</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Connected Papers</div>
+          <div class="rc-desc">Enter any ML paper and get a visual graph of related papers — citations, co-citations, and field clusters. Invaluable for literature reviews in Phase 9.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Map a research field quickly</div>
+          <div class="rc-tags"><span class="r-tag">Literature Review</span><span class="r-tag">Graph</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Connected Papers</span><a class="rc-link" href="https://www.connectedpapers.com/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="research">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Research</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip on"></div></div></div>
+          <div class="rc-title">OpenReview — Free Submission</div>
+          <div class="rc-desc">Submit your research paper to NeurIPS, ICLR, ACL workshops and other top venues for free. All reviews are public. Great for your Phase 10 first publication.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Publish at top ML venues free</div>
+          <div class="rc-tags"><span class="r-tag">NeurIPS</span><span class="r-tag">ICLR</span><span class="r-tag">ACL</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by OpenReview</span><a class="rc-link" href="https://openreview.net/" target="_blank">Open →</a></div>
+      </div>
+
+      <div class="rc sr" data-cat="research">
+        <div class="rc-bar"></div>
+        <div class="rc-body">
+          <div class="rc-top"><span class="rc-cat">Research</span><div class="diff"><div class="diff-pip on"></div><div class="diff-pip on"></div><div class="diff-pip"></div></div></div>
+          <div class="rc-title">Semantic Scholar</div>
+          <div class="rc-desc">AI-powered free research tool. Find papers, get summaries, track authors, and discover citation networks across all of computer science. Better search than Google Scholar for ML.</div>
+          <div class="rc-gain"><div class="rc-gain-dot"></div>Smart ML paper discovery</div>
+          <div class="rc-tags"><span class="r-tag">Search</span><span class="r-tag">Citations</span><span class="r-tag">AI-powered</span></div>
+        </div>
+        <div class="rc-foot"><span class="rc-by">by Allen Institute</span><a class="rc-link" href="https://www.semanticscholar.org/" target="_blank">Open →</a></div>
+      </div>
+
+    </div><!-- end res-board -->
+  </div>
+</section>
+
+<!-- ══ TOOLS ══ -->
+<section class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// শূন্য খরচের টুল</span>
+      <h2 class="h2">প্রতিটি টুল। চিরকাল বিনামূল্যে।</h2>
+      <p class="lead">ওপেন-সোর্স বা স্থায়ীভাবে ফ্রি টায়ার। কোনো ক্রেডিট কার্ড লাগবে না।</p>
+    </div>
+    <div class="tools-grid">
+      <div class="tc sr" onclick="openTool('python')"><div class="tc-icon">🐍</div><div class="tc-name">Python 3</div><div class="tc-cat">Language</div></div>
+      <div class="tc sr" onclick="openTool('colab')"><div class="tc-icon">☁️</div><div class="tc-name">Google Colab</div><div class="tc-cat">GPU Notebooks</div></div>
+      <div class="tc sr" onclick="openTool('kaggle')"><div class="tc-icon">🏆</div><div class="tc-name">Kaggle</div><div class="tc-cat">Datasets + GPU</div></div>
+      <div class="tc sr" onclick="openTool('numpy')"><div class="tc-icon">🔢</div><div class="tc-name">NumPy/Pandas</div><div class="tc-cat">Data Science</div></div>
+      <div class="tc sr" onclick="openTool('matplotlib')"><div class="tc-icon">📊</div><div class="tc-name">Matplotlib</div><div class="tc-cat">Visualization</div></div>
+      <div class="tc sr" onclick="openTool('sklearn')"><div class="tc-icon">🤖</div><div class="tc-name">Scikit-Learn</div><div class="tc-cat">Classical ML</div></div>
+      <div class="tc sr" onclick="openTool('pytorch')"><div class="tc-icon">🔥</div><div class="tc-name">PyTorch</div><div class="tc-cat">Deep Learning</div></div>
+      <div class="tc sr" onclick="openTool('huggingface')"><div class="tc-icon">🤗</div><div class="tc-name">HuggingFace</div><div class="tc-cat">Transformers/LLMs</div></div>
+      <div class="tc sr" onclick="openTool('ollama')"><div class="tc-icon">🦙</div><div class="tc-name">Ollama</div><div class="tc-cat">Local LLMs</div></div>
+      <div class="tc sr" onclick="openTool('streamlit')"><div class="tc-icon">🎈</div><div class="tc-name">Streamlit</div><div class="tc-cat">App Deployment</div></div>
+      <div class="tc sr" onclick="openTool('overleaf')"><div class="tc-icon">📜</div><div class="tc-name">Overleaf</div><div class="tc-cat">LaTeX / Papers</div></div>
+      <div class="tc sr" onclick="openTool('mlflow')"><div class="tc-icon">📈</div><div class="tc-name">MLflow</div><div class="tc-cat">Experiment Track</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOOL MODAL ══ -->
+<div class="modal-overlay" id="toolModal" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-head">
+      <div class="modal-tool-id">
+        <div class="modal-icon" id="mIcon"></div>
+        <div><div class="modal-name" id="mName"></div><div class="modal-cat" id="mCat"></div></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+  </div>
+</div>
+  </div>
+</section>
+
+<!-- ══ ROADMAP ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// শেখার যাত্রা</span>
+      <h2 class="h2">৫টি অধ্যায়। তোমার গতিতে।</h2>
+      <p class="lead">সব ধাপ দেখতে স্ক্রোল করো। কোনো ডেডলাইন নেই — সব কিছু নিজের গতিতে।</p>
+    </div>
+    <div class="rm sr">
+      <div class="rm-node"><div class="rm-n">01</div><div class="rm-pre">// ভিত্তি</div><div class="rm-t">Python & Data</div><div class="rm-w">সপ্তাহ ১–৯ · ৩টি ধাপ</div></div>
+      <div class="rm-node"><div class="rm-n">02</div><div class="rm-pre">// ক্লাসিক্যাল ML</div><div class="rm-t">ML অ্যালগরিদম</div><div class="rm-w">সপ্তাহ ১০–১৫ · ১টি ধাপ</div></div>
+      <div class="rm-node"><div class="rm-n">03</div><div class="rm-pre">// ডিপ লার্নিং</div><div class="rm-t">PyTorch & DL</div><div class="rm-w">সপ্তাহ ১৬–২২ · ১টি ধাপ</div></div>
+      <div class="rm-node"><div class="rm-n">04</div><div class="rm-pre">// NLP ও LLM</div><div class="rm-t">Transformers</div><div class="rm-w">সপ্তাহ ২৩–৩৪ · ২টি ধাপ</div></div>
+      <div class="rm-node"><div class="rm-n">05</div><div class="rm-pre">// গবেষণা</div><div class="rm-t">পেপার প্রকাশ করো</div><div class="rm-w">সপ্তাহ ৩৫–৪৮ · ৩টি ধাপ</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section id="projects" class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// হাতে-কলমে প্রজেক্ট</span>
+      <h2 class="h2">বাস্তব জিনিস তৈরি করো।<br>সব কম্পিউট বিনামূল্যে।</h2>
+      <p class="lead">প্রতিটি প্রজেক্টে বিনামূল্যে GPU, ডেটাসেট ও হোস্টিং ব্যবহার হয়।</p>
+    </div>
+    <div class="proj-grid">
+      <div class="pj sr"><span class="pj-badge b">শিক্ষানবিশ</span><div class="pj-title">Titanic Predictor</div><div class="pj-desc">Classic EDA + classification. Feature engineering, logistic regression, and evaluation on Kaggle's free dataset.</div><div class="pj-stack"><span class="s-tag">Pandas</span><span class="s-tag">sklearn</span><span class="s-tag">Kaggle</span></div></div>
+      <div class="pj sr"><span class="pj-badge b">শিক্ষানবিশ</span><div class="pj-title">House Price Regression</div><div class="pj-desc">Full pipeline: data cleaning → feature engineering → XGBoost → Kaggle competition submission.</div><div class="pj-stack"><span class="s-tag">XGBoost</span><span class="s-tag">Pandas</span><span class="s-tag">Colab</span></div></div>
+      <div class="pj sr"><span class="pj-badge i">মধ্যবর্তী</span><div class="pj-title">Image Classifier (CNN)</div><div class="pj-desc">Train ResNet on CIFAR-10 with Colab GPU. Transfer learning, data augmentation, TensorBoard logging.</div><div class="pj-stack"><span class="s-tag">PyTorch</span><span class="s-tag">torchvision</span><span class="s-tag">Colab GPU</span></div></div>
+      <div class="pj sr"><span class="pj-badge i">মধ্যবর্তী</span><div class="pj-title">Sentiment Analysis App</div><div class="pj-desc">Fine-tune BERT for Bengali/English sentiment. Deploy as a Gradio app on HuggingFace Spaces — free.</div><div class="pj-stack"><span class="s-tag">BERT</span><span class="s-tag">HuggingFace</span><span class="s-tag">Gradio</span></div></div>
+      <div class="pj sr"><span class="pj-badge a">উন্নত</span><div class="pj-title">RAG Document Chatbot</div><div class="pj-desc">PDF Q&A system using LangChain + Chroma + Mistral via Ollama. Zero API cost, runs locally or on Colab.</div><div class="pj-stack"><span class="s-tag">LangChain</span><span class="s-tag">Chroma</span><span class="s-tag">Ollama</span><span class="s-tag">Streamlit</span></div></div>
+      <div class="pj sr"><span class="pj-badge a">উন্নত</span><div class="pj-title">First ML Research Paper</div><div class="pj-desc">Design a novel experiment, run ablations, write in LaTeX on Overleaf, submit to arXiv + OpenReview workshop.</div><div class="pj-stack"><span class="s-tag">LaTeX</span><span class="s-tag">Overleaf</span><span class="s-tag">arXiv</span><span class="s-tag">OpenReview</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMMUNITY ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// কমিউনিটি</span>
+      <h2 class="h2">সবার সাথে শেখো।</h2>
+      <p class="lead">সব কমিউনিটি বিনামূল্যে। অগ্রগতি শেয়ার করো, প্রশ্ন করো, একসাথে বাড়ো।</p>
+    </div>
+    <div class="cm-grid">
+      <a class="cm sr" href="https://discord.gg/huggingface" target="_blank"><div class="cm-ico">💬</div><div class="cm-n">HuggingFace Discord</div><div class="cm-d">ML community, model sharing, Q&A.</div></a>
+      <a class="cm sr" href="https://www.reddit.com/r/MachineLearning/" target="_blank"><div class="cm-ico">🤖</div><div class="cm-n">r/MachineLearning</div><div class="cm-d">Research, discussions, career advice.</div></a>
+      <a class="cm sr" href="https://www.kaggle.com/discussions" target="_blank"><div class="cm-ico">🏆</div><div class="cm-n">Kaggle Forums</div><div class="cm-d">Competition tips & notebooks.</div></a>
+      <a class="cm sr" href="https://paperswithcode.com/" target="_blank"><div class="cm-ico">📄</div><div class="cm-n">Papers With Code</div><div class="cm-d">Track SOTA, find implementations.</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section id="faq" class="sec sec-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// সাধারণ জিজ্ঞাসা</span>
+      <h2 class="h2">প্রশ্নের উত্তর।</h2>
+    </div>
+    <div class="faq-list">
+      <div class="fq open"><div class="fq-q" onclick="toggleFq(this.parentElement)">এটা কি সত্যিই ১০০% বিনামূল্যে? <span class="fq-icon">+</span></div><div class="fq-a">Yes — every resource, tool, dataset, GPU, and deployment platform linked here is completely free. Colab free GPU, Kaggle free compute, HuggingFace Spaces for deployment, Ollama for local LLMs. No credit card, ever.</div></div>
+      <div class="fq"><div class="fq-q" onclick="toggleFq(this.parentElement)">কি শক্তিশালী কম্পিউটার দরকার? <span class="fq-icon">+</span></div><div class="fq-a">No. All GPU-heavy training runs on Google Colab or Kaggle in your browser. A basic laptop with internet works perfectly. We chose free cloud compute specifically so hardware is never a barrier.</div></div>
+      <div class="fq"><div class="fq-q" onclick="toggleFq(this.parentElement)">পূর্বশর্ত কী? <span class="fq-icon">+</span></div><div class="fq-a">Just basic computer literacy. Phase 01 starts from absolute zero with Python. High school algebra is helpful for ML math but we introduce every concept as needed. No prior coding experience required.</div></div>
+      <div class="fq"><div class="fq-q" onclick="toggleFq(this.parentElement)">শেষ করতে কতদিন লাগে? <span class="fq-icon">+</span></div><div class="fq-a">~48 weeks studying 10–15 hours per week. But it's fully self-paced — no deadlines, no cohorts. Skip phases you know, spend more time on harder ones. Everything stays free and accessible forever.</div></div>
+      <div class="fq"><div class="fq-q" onclick="toggleFq(this.parentElement)">সার্টিফিকেট নেই — দক্ষতা কীভাবে প্রমাণ করব? <span class="fq-icon">+</span></div><div class="fq-a">By building real things: a GitHub portfolio, public models on HuggingFace Hub, live Streamlit apps, and optionally a published arXiv preprint. These are far more credible to employers and grad schools than certificates.</div></div>
+      <div class="fq"><div class="fq-q" onclick="toggleFq(this.parentElement)">বাংলাদেশের শিক্ষার্থীদের জন্য ভালো? <span class="fq-icon">+</span></div><div class="fq-a">Absolutely — designed with Bangladeshi learners in mind. Every tool works without VPN. The research track is especially valuable for those targeting grad school abroad, and all content is accessible on slow connections.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="cta-box sr">
+      <span class="cta-pre">// আজই শুরু করো</span>
+      <h2 class="cta-t">কোনো সাইনআপ নেই।<br>কোনো অপেক্ষা নেই। শুধু শেখো।</h2>
+      <p class="cta-d">উপরের ধাপ ১ খোলো অথবা সরাসরি Kaggle Learn-এ যাও। চিরকাল বিনামূল্যে।</p>
+      <div class="cta-btns">
+        <a href="#curriculum" class="btn-pri">⚡ ধাপ ০১ খোলো</a>
+        <a href="https://www.kaggle.com/learn" target="_blank" class="btn-sec">🎓 Kaggle-এ শুরু করো</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CREATOR ══ -->
+<section class="creator-section sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="pre">// নির্মাতা পরিচিতি</span>
+      <h2 class="h2">একজন শিক্ষার্থীর হাতে তৈরি,<br><em style="font-family:'DM Serif Display',serif;font-style:italic;color:var(--teal)">শিক্ষার্থীদের জন্য।</em></h2>
+      <p class="lead">এই কোর্স ও প্ল্যাটফর্ম সম্পূর্ণ একা তৈরি করা হয়েছে — কমিউনিটির জন্য একটি বিনামূল্যের উপহার হিসেবে।</p>
+    </div>
+    <div class="creator-box sr">
+      <div class="creator-photo-wrap">
+        <img src="data:image/jpeg;base64,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" alt="Mushfiqul Alam Nasif" />
+        <div class="creator-photo-overlay"></div>
+      </div>
+      <div class="creator-info">
+        <span class="creator-role">✦ কোর্স নির্মাতা ও পাঠ্যক্রম ডিজাইনার</span>
+        <h3 class="creator-name">Mushfiqul<br>Alam Nasif</h3>
+        <div class="creator-dept">
+          <div class="creator-dept-dot"></div>
+          কম্পিউটার বিজ্ঞান ও প্রকৌশল (CSE)
+        </div>
+        <p class="creator-bio">
+          বিশ্বমানের AI/ML শিক্ষা সবার কাছে পৌঁছে দেওয়ার স্বপ্ন নিয়ে কাজ করছি — বিশেষত বাংলাদেশের সেই শিক্ষার্থীদের জন্য যারা খরচের বাধার মুখোমুখি। এই পুরো পাঠ্যক্রম, রিসোর্স লাইব্রেরি ও প্ল্যাটফর্ম একটি বিনামূল্যের পাবলিক রিসোর্স হিসেবে ডিজাইন ও তৈরি করা হয়েছে। কোনো পেওয়াল নেই।
+        </p>
+        <div class="creator-stats">
+          <div class="cs-item"><div class="cs-n">48</div><div class="cs-l">সপ্তাহ</div></div>
+          <div class="cs-item"><div class="cs-n">60+</div><div class="cs-l">রিসোর্স</div></div>
+          <div class="cs-item"><div class="cs-n">$0</div><div class="cs-l">তোমার খরচ</div></div>
+        </div>
+        <div class="creator-links">
+          <a class="creator-link cl-github" href="https://github.com/nasif120696-collab" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            github.com/nasif120696-collab
+          </a>
+          <a class="creator-link cl-course" href="#curriculum">
+            ⚡ View My Curriculum
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <a href="#" class="logo"><div class="logo-icon">NP</div><span class="logo-text">নিউরালপাথ</span></a>
+  <div>
+    <div class="ft-l">চিরকাল বিনামূল্যে। শিক্ষার্থীদের জন্য তৈরি। <span>কোনো পেওয়াল নেই।</span></div>
+    <div class="ft-mono">v3.0 · মুক্ত শিক্ষা · সকল লিংককৃত রিসোর্স © নিজ নিজ মালিকের</div>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--dim)">কমিউনিটির জন্য ♥ দিয়ে তৈরি</div>
+</footer>
+
+<script>
+/* ── Theme ── */
+const html=document.documentElement;
+const togBtn=document.getElementById('togBtn');
+const togLabel=document.getElementById('togLabel');
+const saved=localStorage.getItem('np3-theme')||'dark';
+html.setAttribute('data-theme',saved);
+togLabel.textContent=saved==='dark'?'ডার্ক':'লাইট';
+togBtn.addEventListener('click',()=>{
+  const next=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',next);
+  localStorage.setItem('np3-theme',next);
+  togLabel.textContent=next==='dark'?'ডার্ক':'লাইট';
+});
+
+/* ── Curriculum accordion ── */
+function togglePh(el){el.classList.toggle('open')}
+function toggleFq(el){el.classList.toggle('open')}
+
+/* ── Resource filter ── */
+const btns=document.querySelectorAll('.f-btn');
+const cards=document.querySelectorAll('.rc');
+btns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.f;
+    cards.forEach(c=>{
+      const show=f==='all'||c.dataset.cat===f;
+      c.style.display=show?'flex':'none';
+      c.style.opacity=show?'':'0';
+      if(show) setTimeout(()=>{c.style.opacity='1';c.style.transform='translateY(0)'},10);
+    });
+  });
+});
+
+/* ── Scroll reveal ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.07,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.sr').forEach(el=>io.observe(el));
+
+/* ── Nav shadow ── */
+const nav=document.querySelector('nav');
+window.addEventListener('scroll',()=>{
+  nav.style.boxShadow=window.scrollY>30?'0 4px 24px rgba(0,0,0,.4)':'none';
+});
+
+/* ── Tool Modal ── */
+const TOOLS={
+  python:{
+    icon:'🐍',name:'Python 3',cat:'Programming Language',
+    desc:'Python is the #1 language for AI/ML. It is simple, powerful, and has a massive ecosystem of libraries like NumPy, Pandas, PyTorch, and more. All free and open-source.',
+    downloads:[
+      {label:'⬇ Download Python 3 (Official)',url:'https://www.python.org/downloads/',primary:true},
+      {label:'📖 Official Docs',url:'https://docs.python.org/3/'},
+      {label:'🎓 Beginner Tutorial',url:'https://docs.python.org/3/tutorial/'},
+    ],
+    steps:[
+      {title:'Download & Install',detail:'Go to python.org/downloads and download the latest Python 3 installer for your OS (Windows/Mac/Linux).',code:'https://www.python.org/downloads/'},
+      {title:'Verify Installation',detail:'Open your terminal or command prompt and run:',code:'python --version  # Should show Python 3.x.x'},
+      {title:'Install pip packages',detail:'pip is Python\'s package manager. Install AI/ML libraries with:',code:'pip install numpy pandas matplotlib scikit-learn torch'},
+      {title:'Create a virtual environment',detail:'Keep projects isolated using venv:',code:'python -m venv myenv\nsource myenv/bin/activate  # Mac/Linux\nmyenv\\Scripts\\activate  # Windows'},
+      {title:'Run your first script',detail:'Create a file called hello.py and run it:',code:'python hello.py'},
+    ],
+    tips:['Use VS Code as your editor — free & powerful','Python 3.10+ recommended for AI/ML work','Google Colab lets you skip local install entirely','Use requirements.txt to share dependencies']
+  },
+  colab:{
+    icon:'☁️',name:'Google Colab',cat:'Free GPU Notebooks',
+    desc:'Google Colab gives you a free Jupyter notebook environment with GPU access — no setup, runs in your browser. Perfect for training ML models without any hardware cost.',
+    downloads:[
+      {label:'🚀 Open Google Colab',url:'https://colab.research.google.com/',primary:true},
+      {label:'📖 Colab FAQ',url:'https://research.google.com/colaboratory/faq.html'},
+      {label:'🎓 Intro Notebook',url:'https://colab.research.google.com/notebooks/intro.ipynb'},
+    ],
+    steps:[
+      {title:'Open Colab',detail:'Go to colab.research.google.com — sign in with your Google account. No download needed.',code:'https://colab.research.google.com'},
+      {title:'Enable GPU',detail:'Go to Runtime → Change runtime type → Select T4 GPU → Save. Now you have a free GPU!',code:'Runtime > Change runtime type > T4 GPU'},
+      {title:'Install packages',detail:'Run pip install in a cell — packages are available for the session:',code:'!pip install torch torchvision transformers'},
+      {title:'Mount Google Drive',detail:'Persist your files between sessions:',code:"from google.colab import drive\ndrive.mount('/content/drive')"},
+      {title:'Save your work',detail:'Use File → Save a copy in Drive, or download as .ipynb to keep your notebook.',code:'File > Save a copy in Drive'},
+    ],
+    tips:['Free tier gives ~12hrs GPU per day','Colab Pro ($10/mo) gives faster GPUs','Always save to Drive — sessions reset after idle','Use !wget to download datasets directly']
+  },
+  kaggle:{
+    icon:'🏆',name:'Kaggle',cat:'Datasets + Free GPU',
+    desc:'Kaggle is the world\'s largest data science platform. It offers free GPU/TPU notebooks, 50,000+ datasets, ML competitions with prizes, and free micro-courses with certificates.',
+    downloads:[
+      {label:'🚀 Join Kaggle (Free)',url:'https://www.kaggle.com/',primary:true},
+      {label:'📚 Kaggle Learn Courses',url:'https://www.kaggle.com/learn'},
+      {label:'📦 Kaggle Datasets',url:'https://www.kaggle.com/datasets'},
+      {label:'⬇ Kaggle API CLI',url:'https://github.com/Kaggle/kaggle-api'},
+    ],
+    steps:[
+      {title:'Create a free account',detail:'Go to kaggle.com and sign up for free. No credit card needed.',code:'https://www.kaggle.com/account/login'},
+      {title:'Enable GPU in Notebooks',detail:'Open any notebook → Settings (right panel) → Accelerator → GPU T4 x2 (30 hrs/week free)',code:'Settings > Accelerator > GPU T4 x2'},
+      {title:'Find a dataset',detail:'Browse kaggle.com/datasets — search for any topic. Click "New Notebook" to use it instantly.',code:'https://www.kaggle.com/datasets'},
+      {title:'Install Kaggle API locally',detail:'Download datasets to your PC via the API:',code:'pip install kaggle\nkaggle datasets download -d dataset-name'},
+      {title:'Join a competition',detail:'Go to kaggle.com/competitions → pick a beginner competition → submit your first predictions!',code:'https://www.kaggle.com/competitions?hostSegment=featured'},
+    ],
+    tips:['30 hrs/week of free GPU included','Earn certificates from 8 free micro-courses','Great for building your portfolio','Join community discussions for learning']
+  },
+  numpy:{
+    icon:'🔢',name:'NumPy & Pandas',cat:'Data Science Libraries',
+    desc:'NumPy provides fast multi-dimensional arrays and math operations. Pandas provides DataFrames for tabular data manipulation. Together they are the backbone of every data science workflow.',
+    downloads:[
+      {label:'⬇ Install via pip',url:'https://numpy.org/install/',primary:true},
+      {label:'📖 NumPy Docs',url:'https://numpy.org/doc/stable/'},
+      {label:'📖 Pandas Docs',url:'https://pandas.pydata.org/docs/'},
+      {label:'🎓 Kaggle Pandas Course',url:'https://www.kaggle.com/learn/pandas'},
+    ],
+    steps:[
+      {title:'Install both libraries',detail:'Open terminal and install with pip:',code:'pip install numpy pandas'},
+      {title:'Import and use NumPy',detail:'NumPy arrays are faster than Python lists for math operations:',code:"import numpy as np\narr = np.array([1, 2, 3, 4, 5])\nprint(arr * 2)  # [2 4 6 8 10]"},
+      {title:'Load data with Pandas',detail:'Read any CSV file into a DataFrame in one line:',code:"import pandas as pd\ndf = pd.read_csv('data.csv')\nprint(df.head())"},
+      {title:'Explore your data',detail:'Get statistics and info about your dataset:',code:"df.info()\ndf.describe()\ndf['column'].value_counts()"},
+      {title:'Filter and manipulate',detail:'Slice, filter, and transform data easily:',code:"df[df['age'] > 25]\ndf.groupby('category').mean()\ndf.dropna()"},
+    ],
+    tips:['NumPy is installed with most ML libraries automatically','Pandas .apply() is powerful for custom transformations','Use df.to_csv() to save processed data','Read the Pandas cheat sheet — saves hours']
+  },
+  matplotlib:{
+    icon:'📊',name:'Matplotlib',cat:'Data Visualization',
+    desc:'Matplotlib is the standard Python library for creating charts and plots. Seaborn builds on it for statistical visualizations. Together they cover everything from simple line charts to publication-quality figures.',
+    downloads:[
+      {label:'⬇ Install via pip',url:'https://matplotlib.org/stable/users/installing/index.html',primary:true},
+      {label:'📖 Matplotlib Docs',url:'https://matplotlib.org/stable/'},
+      {label:'📖 Seaborn Docs',url:'https://seaborn.pydata.org/'},
+      {label:'🎓 Tutorial Gallery',url:'https://matplotlib.org/stable/gallery/index.html'},
+    ],
+    steps:[
+      {title:'Install Matplotlib & Seaborn',detail:'',code:'pip install matplotlib seaborn'},
+      {title:'Create your first plot',detail:'Plot a simple line chart:',code:"import matplotlib.pyplot as plt\nplt.plot([1,2,3,4], [1,4,9,16])\nplt.title('My Plot')\nplt.show()"},
+      {title:'Plot with Pandas',detail:'DataFrames have built-in plotting:',code:"df['column'].hist()\ndf.plot(x='date', y='value')\nplt.show()"},
+      {title:'Use Seaborn for stats plots',detail:'Seaborn makes beautiful statistical charts:',code:"import seaborn as sns\nsns.heatmap(df.corr(), annot=True)\nsns.boxplot(data=df, x='category', y='value')"},
+      {title:'Save figures',detail:'Export publication-quality figures:',code:"plt.savefig('plot.png', dpi=300, bbox_inches='tight')"},
+    ],
+    tips:['Use plt.style.use("seaborn") for nicer defaults','Plotly is better for interactive charts','Save at dpi=300 for papers and presentations','Seaborn heatmaps are great for correlation analysis']
+  },
+  sklearn:{
+    icon:'🤖',name:'Scikit-Learn',cat:'Classical ML Library',
+    desc:'Scikit-learn is the go-to Python library for classical machine learning — regression, classification, clustering, dimensionality reduction, and model evaluation. Simple API, excellent documentation.',
+    downloads:[
+      {label:'⬇ Install via pip',url:'https://scikit-learn.org/stable/install.html',primary:true},
+      {label:'📖 Official Docs',url:'https://scikit-learn.org/stable/'},
+      {label:'🎓 User Guide',url:'https://scikit-learn.org/stable/user_guide.html'},
+      {label:'🎓 Kaggle Intro to ML',url:'https://www.kaggle.com/learn/intro-to-ml'},
+    ],
+    steps:[
+      {title:'Install scikit-learn',detail:'',code:'pip install scikit-learn'},
+      {title:'Load a sample dataset',detail:'Scikit-learn has built-in datasets to practice on:',code:"from sklearn.datasets import load_iris\nX, y = load_iris(return_X_y=True)"},
+      {title:'Split train/test data',detail:'Always split your data before training:',code:"from sklearn.model_selection import train_test_split\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)"},
+      {title:'Train your first model',detail:'Train a Random Forest classifier:',code:"from sklearn.ensemble import RandomForestClassifier\nmodel = RandomForestClassifier()\nmodel.fit(X_train, y_train)"},
+      {title:'Evaluate the model',detail:'Check accuracy on the test set:',code:"from sklearn.metrics import accuracy_score\npreds = model.predict(X_test)\nprint(accuracy_score(y_test, preds))"},
+    ],
+    tips:['All sklearn models follow the same .fit()/.predict() API','Use Pipeline to chain preprocessing + model','cross_val_score() gives more reliable accuracy','XGBoost/LightGBM are even more powerful for tabular data']
+  },
+  pytorch:{
+    icon:'🔥',name:'PyTorch',cat:'Deep Learning Framework',
+    desc:'PyTorch is the leading deep learning framework used by most researchers and companies. It is fully open-source, dynamic, and perfect for building neural networks, CNNs, RNNs, and Transformers.',
+    downloads:[
+      {label:'⬇ Get PyTorch (Official)',url:'https://pytorch.org/get-started/locally/',primary:true},
+      {label:'📖 PyTorch Docs',url:'https://pytorch.org/docs/stable/'},
+      {label:'🎓 Official Tutorials',url:'https://pytorch.org/tutorials/'},
+      {label:'🎓 fast.ai (uses PyTorch)',url:'https://course.fast.ai/'},
+    ],
+    steps:[
+      {title:'Install PyTorch',detail:'Go to pytorch.org/get-started and select your OS/CUDA version. For CPU only (no GPU):',code:'pip install torch torchvision torchaudio'},
+      {title:'Verify GPU is available',detail:'Check if PyTorch can see your GPU:',code:"import torch\nprint(torch.cuda.is_available())  # True if GPU works\nprint(torch.__version__)"},
+      {title:'Create tensors',detail:'Tensors are the core data structure in PyTorch:',code:"x = torch.tensor([[1,2],[3,4]], dtype=torch.float32)\nx = x.cuda()  # Move to GPU\nprint(x.shape)"},
+      {title:'Build a neural network',detail:'Define a simple feedforward network:',code:"import torch.nn as nn\nmodel = nn.Sequential(\n  nn.Linear(784, 128),\n  nn.ReLU(),\n  nn.Linear(128, 10)\n)"},
+      {title:'Train the model',detail:'The basic training loop:',code:"optimizer = torch.optim.Adam(model.parameters())\nfor epoch in range(10):\n  pred = model(X_train)\n  loss = nn.CrossEntropyLoss()(pred, y_train)\n  optimizer.zero_grad()\n  loss.backward()\n  optimizer.step()"},
+    ],
+    tips:['Use Google Colab for free GPU to train PyTorch models','torch.no_grad() during inference saves memory','TorchScript lets you export models for production','fastai wraps PyTorch with higher-level APIs']
+  },
+  huggingface:{
+    icon:'🤗',name:'HuggingFace',cat:'Transformers & LLMs',
+    desc:'HuggingFace is the home of open-source AI. It hosts 500,000+ models, datasets, and Spaces (free app hosting). The Transformers library lets you run and fine-tune LLMs like BERT, GPT-2, Mistral, and Llama in just a few lines.',
+    downloads:[
+      {label:'⬇ Install Transformers',url:'https://huggingface.co/docs/transformers/installation',primary:true},
+      {label:'🤗 Browse Models Hub',url:'https://huggingface.co/models'},
+      {label:'🎓 Free NLP Course',url:'https://huggingface.co/learn/nlp-course'},
+      {label:'🚀 Host a Free Space',url:'https://huggingface.co/spaces'},
+    ],
+    steps:[
+      {title:'Install the library',detail:'',code:'pip install transformers datasets accelerate'},
+      {title:'Create a free account',detail:'Sign up at huggingface.co — needed to download some models and push to the Hub.',code:'https://huggingface.co/join'},
+      {title:'Run a model pipeline',detail:'Run sentiment analysis in 3 lines:',code:"from transformers import pipeline\nclassifier = pipeline('sentiment-analysis')\nprint(classifier('I love NeuralPath!'))"},
+      {title:'Download any model',detail:'Browse huggingface.co/models and load any model:',code:"from transformers import AutoModelForCausalLM, AutoTokenizer\ntokenizer = AutoTokenizer.from_pretrained('gpt2')\nmodel = AutoModelForCausalLM.from_pretrained('gpt2')"},
+      {title:'Fine-tune on your data',detail:'Use the Trainer API to fine-tune on your custom dataset:',code:"from transformers import Trainer, TrainingArguments\nargs = TrainingArguments(output_dir='./results', num_train_epochs=3)\ntrainer = Trainer(model=model, args=args, train_dataset=train_data)\ntrainer.train()"},
+    ],
+    tips:['HuggingFace Spaces hosts your Gradio/Streamlit apps for free','Use .from_pretrained() to load any of 500k+ models','Quantized models (GGUF) run on CPU with less RAM','The Hub is like GitHub but for AI models']
+  },
+  ollama:{
+    icon:'🦙',name:'Ollama',cat:'Local LLM Runner',
+    desc:'Ollama lets you run powerful LLMs like Llama 3, Mistral, Gemma, and Phi locally on your own computer — completely private, no API keys, no cost. Works on Mac, Windows, and Linux.',
+    downloads:[
+      {label:'⬇ Download Ollama',url:'https://ollama.com/download',primary:true},
+      {label:'📖 Ollama Docs',url:'https://github.com/ollama/ollama'},
+      {label:'🔍 Browse Models',url:'https://ollama.com/library'},
+    ],
+    steps:[
+      {title:'Download & Install Ollama',detail:'Go to ollama.com/download and install for your OS. It is a simple one-click installer.',code:'https://ollama.com/download'},
+      {title:'Pull your first model',detail:'After install, open terminal and pull a model (Llama 3.2 is 2GB):',code:'ollama pull llama3.2'},
+      {title:'Chat with the model',detail:'Start an interactive chat session:',code:'ollama run llama3.2'},
+      {title:'Use via REST API',detail:'Ollama runs a local server on port 11434 — call it like any API:',code:'curl http://localhost:11434/api/generate \\\n  -d \'{"model":"llama3.2","prompt":"Hello!"}\''},
+      {title:'Use with Python',detail:'Integrate Ollama in your Python code:',code:"import requests\nres = requests.post('http://localhost:11434/api/generate',\n  json={'model':'llama3.2','prompt':'What is ML?','stream':False})\nprint(res.json()['response'])"},
+    ],
+    tips:['Llama 3.2 (3B) works great even on 8GB RAM','Use phi3:mini for a very small but capable model','Ollama is fully private — no data leaves your machine','Works offline — great for sensitive projects']
+  },
+  streamlit:{
+    icon:'🎈',name:'Streamlit',cat:'ML App Deployment',
+    desc:'Streamlit turns Python scripts into shareable web apps in minutes — no HTML or JavaScript needed. Perfect for building ML demos, dashboards, and tools. Deploy for free on Streamlit Community Cloud.',
+    downloads:[
+      {label:'⬇ Install Streamlit',url:'https://docs.streamlit.io/get-started/installation',primary:true},
+      {label:'📖 Streamlit Docs',url:'https://docs.streamlit.io/'},
+      {label:'🚀 Free Deployment',url:'https://streamlit.io/cloud'},
+      {label:'🎨 App Gallery',url:'https://streamlit.io/gallery'},
+    ],
+    steps:[
+      {title:'Install Streamlit',detail:'',code:'pip install streamlit'},
+      {title:'Create your first app',detail:'Create a file called app.py:',code:"import streamlit as st\nst.title('My ML App 🚀')\nname = st.text_input('Enter your name')\nst.write(f'Hello, {name}!')"},
+      {title:'Run the app locally',detail:'In your terminal, run:',code:'streamlit run app.py'},
+      {title:'Add ML predictions',detail:'Connect your model to the UI:',code:"model = load_your_model()\ninput_data = st.text_area('Enter text to classify')\nif st.button('Predict'):\n    result = model.predict([input_data])\n    st.success(f'Result: {result[0]}')"},
+      {title:'Deploy for free',detail:'Push your code to GitHub, then go to share.streamlit.io and connect your repo — free hosting!',code:'https://share.streamlit.io'},
+    ],
+    tips:['st.cache_resource() caches your model so it loads once','Streamlit Cloud gives free public hosting','Use st.sidebar for clean layouts','HuggingFace Spaces also hosts Streamlit apps for free']
+  },
+  overleaf:{
+    icon:'📜',name:'Overleaf',cat:'LaTeX Editor for Papers',
+    desc:'Overleaf is a free online LaTeX editor for writing research papers, theses, and academic documents. It supports real-time collaboration and has thousands of journal/conference templates built-in.',
+    downloads:[
+      {label:'🚀 Open Overleaf (Free)',url:'https://www.overleaf.com/',primary:true},
+      {label:'📖 LaTeX Learn',url:'https://www.overleaf.com/learn'},
+      {label:'📄 IEEE Template',url:'https://www.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn'},
+      {label:'📄 NeurIPS Template',url:'https://www.overleaf.com/latex/templates/neurips-2024/tpsbbrdqcmsh'},
+    ],
+    steps:[
+      {title:'Create a free account',detail:'Go to overleaf.com and sign up for free. No software to install.',code:'https://www.overleaf.com/register'},
+      {title:'Start from a template',detail:'Click "New Project" → choose a template (IEEE, ACL, NeurIPS, etc.). Your paper structure is ready instantly.',code:'New Project > Templates > Search "IEEE" or "NeurIPS"'},
+      {title:'Write in LaTeX',detail:'LaTeX is a markup language. Basic structure:',code:"\\section{Introduction}\nThis paper proposes...\n\n\\begin{equation}\n  E = mc^2\n\\end{equation}"},
+      {title:'Add citations with BibTeX',detail:'Add references easily — paste BibTeX from Google Scholar:',code:"% In your .bib file:\n@article{vaswani2017attention,\n  title={Attention is all you need},\n  author={Vaswani et al.}\n}\n% In your paper:\n\\cite{vaswani2017attention}"},
+      {title:'Add figures from Python',detail:'Export Matplotlib figures and include them:',code:"% Save in Python:\nplt.savefig('fig.pdf', bbox_inches='tight')\n% In Overleaf:\n\\includegraphics[width=0.45\\textwidth]{fig.pdf}"},
+    ],
+    tips:['Free tier has full LaTeX support — no paywall for writing','Google Scholar has "Cite > BibTeX" for any paper','Use the Overleaf spell checker for grammar','Overleaf autosaves and tracks all history']
+  },
+  mlflow:{
+    icon:'📈',name:'MLflow',cat:'Experiment Tracking',
+    desc:'MLflow is an open-source platform for tracking ML experiments — log parameters, metrics, and models across runs so you can compare results and reproduce your best experiments. Used at major tech companies.',
+    downloads:[
+      {label:'⬇ Install MLflow',url:'https://mlflow.org/docs/latest/getting-started/',primary:true},
+      {label:'📖 MLflow Docs',url:'https://mlflow.org/docs/latest/'},
+      {label:'🐙 GitHub Source',url:'https://github.com/mlflow/mlflow'},
+    ],
+    steps:[
+      {title:'Install MLflow',detail:'',code:'pip install mlflow'},
+      {title:'Start the tracking UI',detail:'Launch the web dashboard locally:',code:"mlflow ui\n# Open http://localhost:5000 in browser"},
+      {title:'Log your first experiment',detail:'Add logging to your training script:',code:"import mlflow\nwith mlflow.start_run():\n    mlflow.log_param('lr', 0.01)\n    mlflow.log_param('epochs', 10)\n    mlflow.log_metric('accuracy', 0.95)\n    mlflow.sklearn.log_model(model, 'model')"},
+      {title:'Compare runs in UI',detail:'Open the MLflow UI, select multiple runs, and click Compare to see metrics side-by-side.',code:'http://localhost:5000'},
+      {title:'Load a saved model',detail:'Load any logged model back for inference:',code:"model = mlflow.sklearn.load_model('runs:/RUN_ID/model')\npreds = model.predict(X_test)"},
+    ],
+    tips:['MLflow is 100% free and open-source','Weights & Biases (W&B) is a great cloud alternative','Use autolog() to automatically track sklearn/PyTorch metrics','Store experiment results in SQLite for persistence']
+  },
+};
+
+function openTool(id){
+  const t=TOOLS[id];if(!t)return;
+  document.getElementById('mIcon').textContent=t.icon;
+  document.getElementById('mName').textContent=t.name;
+  document.getElementById('mCat').textContent=t.cat;
+  const dlHTML=t.downloads.map(d=>`<a class="dl-btn${d.primary?' primary':''}" href="${d.url}" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>${d.label}</a>`).join('');
+  const stepsHTML=t.steps.map((s,i)=>`<div class="ss"><div class="ss-num">${String(i+1).padStart(2,'0')}</div><div class="ss-content"><div class="ss-title">${s.title}</div>${s.detail?`<div class="ss-detail">${s.detail}</div>`:''}${s.code?`<code class="ss-code">${s.code.replace(/\n/g,'<br>')}</code>`:''}</div></div>`).join('');
+  const tipsHTML=t.tips.map(tip=>`<div class="tip">${tip}</div>`).join('');
+  document.getElementById('mBody').innerHTML=`
+    <div class="modal-section">
+      <span class="ms-label">// সম্পর্কে</span>
+      <p class="ms-desc">${t.desc}</p>
+    </div>
+    <div class="modal-section">
+      <span class="ms-label">// ডাউনলোড ও লিংক</span>
+      <div class="dl-btns">${dlHTML}</div>
+    </div>
+    <div class="modal-section">
+      <span class="ms-label">// সেটআপ গাইড</span>
+      <div class="setup-steps">${stepsHTML}</div>
+    </div>
+    <div class="modal-section">
+      <span class="ms-label">// প্রো টিপস</span>
+      <div class="tip-chips">${tipsHTML}</div>
+    </div>
+  `;
+  document.getElementById('toolModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('toolModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeModalOutside(e){if(e.target===document.getElementById('toolModal'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
